@@ -1,0 +1,245 @@
+﻿<!doctype html>
+<html lang='fr' style="height: 100%;">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./base.css">
+    <script src="main.js"></script>
+    <title>REBELLION</title>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
+</head>
+
+<body style="height: 100%; background-color: black;">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between" style="height:50px;">
+
+        <div class="float-left">
+            <span class="h3 text-light">REBELLION</span> &nbsp;
+            <span id='username' class="text-light"></span>&nbsp;
+            <span id='usercredits' class="text-light"></span>&nbsp;
+            <button type="button" class="btn btn-dark" onclick="LoadGalaxy()">Carte de la Galaxie</button>
+            <button type="button" class="btn btn-dark " onclick="LoadResume()">Résumé</button>
+            <button type="button" class="btn btn-dark" onclick="ShowBase();">Base d'opération
+            </button>
+            <button type="button" class="btn btn-dark" onclick="ShowCrates('[CONNECTIONGUID]');">Ravitaillement
+                <span id='usercratecount' class="badge badge-light"></span>
+            </button>
+
+        </div>
+        <button class='btn btn-dark float-sm-right' onclick="Disconnect('[CONNECTIONGUID]')">Déconnexion</button>
+    </nav>
+
+
+
+    <div class="container" style='height: calc(100% - 70px); width: 100%; position: relative; min-width: 100%; background: black; overflow: hidden'>
+        <div id="desktop" style="height: 100%; width: 100%;">
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="planetmodal" tabindex="-1" role="dialog" style="border-color: white; border-radius: 2px;">
+        <div class="modal-dialog" role="document" style="  width: 90%;height: 90%;min-width: 90%;padding: 0;">
+            <div class="modal-content text-white" id="planetmodalinfos" style="height: 100%;width: 100%; background-color: black">
+
+            </div>
+        </div>
+    </div>
+
+    <div id='base' style="display: none">
+
+        <ul class="nav nav-tabs" id="BaseTab" role="tablist">
+            <li class="text-light align-middle h5 m-2">Base d'opération</li>
+            <li class="text-muted align-middle mt-2 ml-2 mr-3" id="basename">Coruscant</li>
+            <li class="nav-item">
+                <a class="nav-link active" id="tabmodule" data-toggle="tab" href="#basemodule" role="tab" aria-controls="basemodule" aria-selected="true">Modules</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tabassets" data-toggle="tab" href="#baseassets" role="tab" aria-controls="baseassets" aria-selected="false">Actifs</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="BaseTabContent" style="height: calc(100% - 41px);">
+            <div class="tab-pane fade show active" id="basemodule" role="tabpanel" aria-labelledby="tabmodule">
+
+                <ul class="nav nav-tabs" id="modulebasetab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="hangar-tab" data-toggle="tab" href="#hangarmodule" role="tab" aria-controls="hangarmodule"
+                            aria-selected="true">Hangar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="medbay-tab" data-toggle="tab" href="#medbaymodule" role="tab" aria-controls="medbaymodule" aria-selected="false">Medical</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="control-tab" data-toggle="tab" href="#controlmodule" role="tab" aria-controls="controlmodule" aria-selected="false">Contrôle</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="modulebasetabcontent">
+                    <div class="tab-pane fade show active" id="hangarmodule" role="tabpanel" aria-labelledby="hangar-tab">
+                        <p id='hangar_content' class="text-light">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col text-light" id='hangar_left_col'>
+
+                                    </div>
+                                    <div class="col text-light">
+                                        <p>Pilotes au sol:</p>
+                                        <div>
+                                            <button class="btn btn-primary">Faire décoller des pilotes</button>
+                                        </div>
+                                        <p id='hangar_right_col'></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="medbaymodule" role="tabpanel" aria-labelledby="medbay-tab">
+                        <p id='medbay_content' class="text-light"></p>
+                    </div>
+                    <div class="tab-pane fade" id="controlmodule" role="tabpanel" aria-labelledby="control-tab">
+                        <p id='control_content' class="text-light"></p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="baseassets" role="tabpanel" aria-labelledby="tabassets" style="height: 100%;">
+                <ul class="nav nav-tabs" id="assetbasetab" role="tablist">
+
+                </ul>
+                <div class="tab-content" id="assetbasetabcontent" style="height: 100%;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="squadronbasetemplate" style="display: none">
+        <div class="tab-pane fade" id="asset_id" role="tabpanel" aria-labelledby="asset_tab_id" style="height: 100%;">
+            <div id='squadron' class="text-light container-fluid" style="height: calc(100% - 82px);">
+                <div id="squadroncontent" class="row" style="height: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="flightbasetemplate" style="display: none">
+        <div id='flight' class="card bg-dark m-1 col-sm">
+            <div class="h6 card-header bg-dark text-light">
+                <span id='flightname' class="align-self-start"></span>
+                <a href="#" id="btnGoBack">
+                    <img src='https://image.flaticon.com/icons/svg/17/17699.svg' style="width: 21px; height: 21px;" title="Ordonner à l'escadron de rentrer à la base"
+                        class="float-right">
+                </a>
+            </div>
+            <div id="flightcontent" class="card-block bg-dark text-light scroll"></div>
+        </div>
+    </div>
+
+    <div id="pilotbasetemplate" style="display: none">
+        <div id='pilot' class="card bg-dark ml-1 mr-1" style="width: 18rem;">
+            <div class="card-body">
+                <h6 id="pilotname" class="h6 card-title bg-dark text-light">[PILOTNAME]</h6>
+                <h6 id="pilotship" class="h6 card-subtitle bg-dark text-muted">[PILOTSHIPNAME]</h6>
+                <div class="card-text bg-dark text-light p-3">
+                    <small class='pilotStats'>
+                        <span class='xwingshipfont statskill' id='pilotshipletter'>[SHIPLETTER]</span>
+                        <span class='statskill' id='pilotskill'>[PILOTSKILL]</span>&nbsp;
+                        <span class='xwingfont statattack'>%</span>
+                        <span class='statattack' id='shipattack'>[SHIPATTACK]</span>&nbsp;
+                        <span class='xwingfont statagility'>^</span>
+                        <span class='statagility' id='shipagility'>[SHIPAGILITY]</span>&nbsp;
+                        <span class='xwingfont stathull'>&</span>
+                        <span class='stathull' id='shiphull'>[SHIPHULL]</span>&nbsp;
+                        <span class='xwingfont statshield'>*</span>
+                        <span class='statshield' id='shipshield'>[SHIPSHIELD]</span>&nbsp;
+                    </small>
+                    <div id='pilotability'>[PILOTABILITY]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id='planetbasetemplate' style="display: none">
+        <div id='planeticon' guid='' style='display: none;' class='planetdiv'>
+            <img id='planetImage' src='' style='width: 16px; height: 16px; filter:blur(4px);' />
+            <p id='planetname' style="float: right; " class="text-warning">PlanetName</p>
+        </div>
+    </div>
+
+    <div id="galaxyicontemplate" style="display: none;">
+        <div style='display: none;'>
+            <img src="" style="width: 32px; height: 32px; position: relative;" data-toggle="tooltip" data-html="true" title="IconName">
+        </div>
+    </div>
+
+
+    <div id="planetModalTemplate" style="display: none;">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Informations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="assets-tab" data-toggle="tab" href="#assets" role="tab" aria-controls="assets" aria-selected="false">Actifs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="buildings-tab" data-toggle="tab" href="#buildings" role="tab" aria-controls="buildings" aria-selected="false">Bâtiments</a>
+            </li>
+        </ul>
+        <div class="tab-content m-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <img id='planetFullImage' class="img-responsive" style="float:left;width:128px;height:128px;" src="" width="128px">
+                <div class="writing">
+                    <h4 id='planetName'></h4>
+                    <small id='planetDesc' class="lead"></small>
+                    <hr>
+                    <small id='planetHistory'></small>
+                    <br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="assets" role="tabpanel" aria-labelledby="assets-tab">
+                <div class="container" id='assets-list'>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="buildings" role="tabpanel" aria-labelledby="buildings-tab">
+                <div class="container" id='buildings-list'>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id='buildingtemplate' style="display: none;">
+        <div class="media">
+            <img id='image' class="media-left" width="128" alt="Image" src="">
+            <div class="media-body">
+                <h4 id="buildingname" class="card-title">[BUILDINGNAME] QL[BUILDINGQL]</h4>
+                <p id="buildingcontent" class="card-text">[BUILDINGCONTENT]</p>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            Maximize();
+            UpdateUserInfos();
+            LoadGalaxy();
+
+        });
+    </script>
+
+
+</body>
+
+</html>
