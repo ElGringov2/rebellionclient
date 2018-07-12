@@ -30,6 +30,20 @@
         "appId": "com.dragonrider.rebellion",
         "mac": {
             "category": "com.dragonrider.rebellion.type"
+        },
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 150
+                },
+                {
+                    "x": 240,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
         }
     }
 }
