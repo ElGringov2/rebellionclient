@@ -187,7 +187,7 @@ function ShowBase() {
                 template = template.replace("[SHIPHULL]", $(this).attr("shiphull"));
                 template = template.replace("[SHIPSHIELD]", $(this).attr("shipshield"));
                 template = template.replace("[PILOTABILITY]", $(this).attr("pilotability"));
-                template = template.replace("[COMMANDS]", "");
+                template = template.replace("[ACTIONS]", "");
 
                 hangarDescription += template;
             });
@@ -247,8 +247,11 @@ function ShowBase() {
                     $("#squadron_" + i + " #flight").attr("id", "flight" + iFlight);
                     $("#squadron_" + i + " #flight" + iFlight + " #flightname").text($(this).attr("name"));
 
-                    $("#squadron_" + i + " #flight" + iFlight + " #btnGoBack").attr("id", "btngoback" + iFlight)
-                    $("#squadron_" + i + " #flight" + iFlight + " #btngoback" + iFlight).click(function () {
+
+
+                    var action = "<a href='#' id='btnGoBack" + i + "_" + iFlight + "'><img src='./17699.svg' style='width: 21px; height: 21px;' title='Retour à la base' ></a>";
+                    $("#squadron_" + i + " #flight" + iFlight + " #flightactions").html(action);
+                    $("#squadron_" + i + " #flight" + iFlight + " #btnGoBack" + i + "_" + iFlight).click(function () {
                         alert("ca marche! - " + this.id);
                     });
 
@@ -278,8 +281,9 @@ function ShowBase() {
                 $("#squadron_" + i + " #flight").attr("id", "flight" + iFlight);
                 $("#squadron_" + i + " #flight" + iFlight + " #flightname").text("Au sol");
 
-                $("#squadron_" + i + " #flight" + iFlight + " #btnGoBack").attr("id", "btngoback" + iFlight)
-                $("#squadron_" + i + " #flight" + iFlight + " #btngoback" + iFlight).click(function () {
+                var action = "Nouveau vol: <label id='newSquadronCost'>0</label>pts<a href='#' id='btnTakeOff" + i + "'><img src='./takeoff.png' style='width: 21px; height: 21px;' title='Décoller' ></a>";
+                $("#squadron_" + i + " #flight" + iFlight + " #flightactions").html(action);
+                $("#squadron_" + i + " #flight" + iFlight + " #btnTakeOff" + i).click(function () {
                     alert("ca marche! - " + this.id);
                 });
                 $(this).find("Grounded").children().each(function () {
@@ -296,16 +300,27 @@ function ShowBase() {
                     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shipshield").text($(this).attr("shipshield"));
                     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotability").text($(this).attr("pilotability"));
 
-                    var commands = "<input class='form-check-input' type='checkbox' value='' id='defaultCheck1'><label class='form-check-label' for='defaultCheck1'>Prêt à décoller</label>";
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #commands").html(commands);
+                    var commands = "<input class='form-check-input' type='checkbox' value='" + $(this).attr("cost") + "' name='CheckForTakeoff'><label class='form-check-label' for='CheckForTakeoff'>Prêt à décoller</label>";
+                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotcommands").html(commands);
 
 
                 });
 
 
+
+
             });
 
-
+            $('input[name=CheckForTakeoff]').each(function () {
+                $(this).click(function () {
+                    var totalCost = parseInt($("#newSquadronCost").text());
+                    if (this.checked)
+                        totalCost += parseInt(this.value);
+                    else
+                        totalCost -= parseInt(this.value);
+                    $("#newSquadronCost").text(totalCost);
+                });
+            });
         }
     });
 }
