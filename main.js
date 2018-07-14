@@ -15,7 +15,7 @@ function Disconnect(ConnectionGUID) {
 function UpdateUserInfos() {
     $.ajax({
         type: "POST",
-        url: config.get("ServerAdress") + "getuserinfos",
+        url: config.get("ServerAdress") + "getuserinfos.php",
         data: { guid: config.get("connectionGuid") },
         dataType: "xml",
         success: function (xmlData) {
@@ -45,7 +45,7 @@ function LoadGalaxy() {
     ClearDesktop();
     $.ajax({
         type: "POST",
-        url: config.get("ServerAdress") + "getgalaxy",
+        url: config.get("ServerAdress") + "getgalaxy.php",
         data: { guid: config.get("connectionGuid") },
         dataType: "xml",
         success: function (GalaxyXML) {
@@ -93,7 +93,7 @@ function LoadGalaxy() {
                 $(".planetdiv").click(function () {
                     $.ajax({
                         type: "POST",
-                        url: config.get("ServerAdress") + "planetinfos",
+                        url: config.get("ServerAdress") + "getplanetinfos.php",
                         data: {
                             planetGUID: $(this).attr("guid"),
                             guid: config.get("connectionGuid")
@@ -123,10 +123,49 @@ function LoadGalaxy() {
                                 buildingsString += template;
                             });
                             $("#planetmodalinfos #buildings-list").html(buildingsString);
+                            var assetId = 0;
+                            var flightName = "";
+                            $("#planetmodalinfos #assets-list").html("");
                             $(xml).find("assets").children().each(function () {
-
+                                assetId++;
+                                if (flightName != $(this).attr("squadron") + ", " + $(this).attr("flight")) {
+                                    flightName = $(this).attr("squadron") + ", " + $(this).attr("flight")
+                                    $("#planetmodalinfos #assets-list").append("<h6>Escadron " + flightName + " (vous appartient)</h6>");
+                                }
+                                //var xml = $(this).find("pilot");
+                                var template = $("#pilotinlinetemplate").html();
+                                template = template.replace("id='pilot'", "id='assetpilot_" + assetId + "'");
+                                template = template.replace("[PILOTNAME]", $(this).attr("name"));
+                                template = template.replace("[PILOTSHIPNAME]", $(this).attr("shipname"));
+                                template = template.replace("[SHIPLETTER]", $(this).attr("shipletter"));
+                                template = template.replace("[PILOTSKILL]", $(this).attr("pilotskill"));
+                                template = template.replace("[SHIPATTACK]", $(this).attr("shipattack"));
+                                template = template.replace("[SHIPAGILITY]", $(this).attr("shipagility"));
+                                template = template.replace("[SHIPHULL]", $(this).attr("shiphull"));
+                                template = template.replace("[SHIPSHIELD]", $(this).attr("shipshield"));
+                                template = template.replace("[PILOTABILITY]", $(this).attr("pilotability"));
+                                template = template.replace("[PILOTCOST]", $(this).attr("cost"));
+                                $("#planetmodalinfos #assets-list").append(template);
                             });
+                            flightName = "";
                             $(xml).find("otherassets").children().each(function () {
+                                assetId++;
+                                if (flightName != $(this).attr("squadron") + ", " + $(this).attr("flight")) {
+                                    flightName = $(this).attr("squadron") + ", " + $(this).attr("flight")
+                                    $("#planetmodalinfos #assets-list").append("<h6>Escadron " + flightName + "</h6>");
+                                } var template = $("#pilotinlinetemplate").html();
+                                template = template.replace("id='pilot'", "id='assetpilot_" + assetId + "'");
+                                template = template.replace("[PILOTNAME]", $(this).attr("name"));
+                                template = template.replace("[PILOTSHIPNAME]", $(this).attr("shipname"));
+                                template = template.replace("[SHIPLETTER]", $(this).attr("shipletter"));
+                                template = template.replace("[PILOTSKILL]", $(this).attr("pilotskill"));
+                                template = template.replace("[SHIPATTACK]", $(this).attr("shipattack"));
+                                template = template.replace("[SHIPAGILITY]", $(this).attr("shipagility"));
+                                template = template.replace("[SHIPHULL]", $(this).attr("shiphull"));
+                                template = template.replace("[SHIPSHIELD]", $(this).attr("shipshield"));
+                                template = template.replace("[PILOTABILITY]", $(this).attr("pilotability"));
+                                template = template.replace("[PILOTCOST]", $(this).attr("cost"));
+                                $("#planetmodalinfos #assets-list").append(template);
 
                             });
 
@@ -157,7 +196,7 @@ function ShowBase() {
     ShowWaitIndicator("#desktop #squadron_content");
     $.ajax({
         type: "POST",
-        url: config.get("ServerAdress") + "getbase",
+        url: config.get("ServerAdress") + "getbase.php",
         data: { guid: config.get("connectionGuid") },
         dataType: "xml",
         success: function (xmlData) {
@@ -172,11 +211,15 @@ function ShowBase() {
             $("#desktop #hangar_left_col").append("<br> Nombre de mécaniciens: " + $(xml).attr("HangarMechanics"));
 
             var hangarDescription = "";
-
+            var flightName = "";
             var iGrounded = 0;
             $(xml).find("Grounded").children().each(function () {
                 iGrounded = iGrounded + 1;
-                var template = $("#pilotbasetemplate").html();
+                if (flightName != $(this).attr("squadron") + ", " + $(this).attr("flight")) {
+                    flightName = $(this).attr("squadron") + ", " + $(this).attr("flight")
+                    hangarDescription += "<h6>Escadron " + flightName + "</h6>";
+                }
+                var template = $("#pilotinlinetemplate").html();
                 template = template.replace("id='pilot'", "id='groundedpilot_" + iGrounded + "'");
                 template = template.replace("[PILOTNAME]", $(this).attr("name"));
                 template = template.replace("[PILOTSHIPNAME]", $(this).attr("shipname"));
@@ -187,6 +230,7 @@ function ShowBase() {
                 template = template.replace("[SHIPHULL]", $(this).attr("shiphull"));
                 template = template.replace("[SHIPSHIELD]", $(this).attr("shipshield"));
                 template = template.replace("[PILOTABILITY]", $(this).attr("pilotability"));
+                template = template.replace("[PILOTCOST]", $(this).attr("cost"));
                 template = template.replace("[ACTIONS]", "");
 
                 hangarDescription += template;
@@ -210,6 +254,7 @@ function ShowBase() {
             //         medbayDescription += "<ul>" + pilot + "</ul>";
             //     })
             // }
+            
             $("#desktop #medbay_content").html(medbayDescription);
 
 
@@ -219,7 +264,7 @@ function ShowBase() {
     });
     $.ajax({
         type: "POST",
-        url: config.get("ServerAdress") + "squadrons",
+        url: config.get("ServerAdress") + "getsquadrons.php",
         data: { guid: config.get("connectionGuid") },
         dataType: "xml",
         success: function (xmlData) {
@@ -276,35 +321,35 @@ function ShowBase() {
 
                 });
 
-                iFlight = iFlight + 1;
-                $("#squadron_" + i + " #squadroncontent").append($("#flightbasetemplate").html());
-                $("#squadron_" + i + " #flight").attr("id", "flight" + iFlight);
-                $("#squadron_" + i + " #flight" + iFlight + " #flightname").text("Au sol");
+                // iFlight = iFlight + 1;
+                // $("#squadron_" + i + " #squadroncontent").append($("#flightbasetemplate").html());
+                // $("#squadron_" + i + " #flight").attr("id", "flight" + iFlight);
+                // $("#squadron_" + i + " #flight" + iFlight + " #flightname").text("Au sol");
 
-                var action = "Nouveau vol: <label id='newSquadronCost'>0</label>pts<a href='#' id='btnTakeOff" + i + "'><img src='./takeoff.png' style='width: 21px; height: 21px;' title='Décoller' ></a>";
-                $("#squadron_" + i + " #flight" + iFlight + " #flightactions").html(action);
-                $("#squadron_" + i + " #flight" + iFlight + " #btnTakeOff" + i).click(function () {
-                    alert("ca marche! - " + this.id);
-                });
-                $(this).find("Grounded").children().each(function () {
-                    iPilot = iPilot + 1;
-                    $("#squadron_" + i + " #flight" + iFlight + " #flightcontent").append($("#pilotbasetemplate").html());
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot").attr("id", "pilot" + iPilot);
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotname").text($(this).attr("name"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotship").text($(this).attr("shipname"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotshipletter").text($(this).attr("shipletter"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotskill").text($(this).attr("pilotskill"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shipattack").text($(this).attr("shipattack"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shipagility").text($(this).attr("shipagility"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shiphull").text($(this).attr("shiphull"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shipshield").text($(this).attr("shipshield"));
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotability").text($(this).attr("pilotability"));
+                // var action = "Nouveau vol: <label id='newSquadronCost'>0</label>pts<a href='#' id='btnTakeOff" + i + "'><img src='./takeoff.png' style='width: 21px; height: 21px;' title='Décoller' ></a>";
+                // $("#squadron_" + i + " #flight" + iFlight + " #flightactions").html(action);
+                // $("#squadron_" + i + " #flight" + iFlight + " #btnTakeOff" + i).click(function () {
+                //     alert("ca marche! - " + this.id);
+                // });
+                // $(this).find("Grounded").children().each(function () {
+                //     iPilot = iPilot + 1;
+                //     $("#squadron_" + i + " #flight" + iFlight + " #flightcontent").append($("#pilotbasetemplate").html());
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot").attr("id", "pilot" + iPilot);
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotname").text($(this).attr("name"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotship").text($(this).attr("shipname"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotshipletter").text($(this).attr("shipletter"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotskill").text($(this).attr("pilotskill"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shipattack").text($(this).attr("shipattack"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shipagility").text($(this).attr("shipagility"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shiphull").text($(this).attr("shiphull"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #shipshield").text($(this).attr("shipshield"));
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotability").text($(this).attr("pilotability"));
 
-                    var commands = "<input class='form-check-input' type='checkbox' value='" + $(this).attr("cost") + "' name='CheckForTakeoff'><label class='form-check-label' for='CheckForTakeoff'>Prêt à décoller</label>";
-                    $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotcommands").html(commands);
+                //     var commands = "<input class='form-check-input' type='checkbox' value='" + $(this).attr("cost") + "' name='CheckForTakeoff'><label class='form-check-label' for='CheckForTakeoff'>Prêt à décoller</label>";
+                //     $("#squadron_" + i + " #flight" + iFlight + " #pilot" + iPilot + " #pilotcommands").html(commands);
 
 
-                });
+                // });
 
 
 

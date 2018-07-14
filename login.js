@@ -6,6 +6,26 @@ const { app, BrowserWindow } = require('electron');
 window.onload = function () {
 
 
+    $.ajax({
+        type: "POST",
+        url: config.get("ServerAdress") + "getvalidateguid.php",
+        data: {
+            verifyguid: config.get("connectionGuid")
+        },
+        success: function (data) {
+            if (data == "VALID")
+                window.location.replace("index.html");
+            else
+                ShowLogin();
+        },
+        error: function() {
+            ShowLogin();
+        }
+    })
+}
+
+function ShowLogin() {
+
     var user = config.get("username");
 
     if (user == null)
@@ -13,33 +33,35 @@ window.onload = function () {
 
     $("#username").val(user);
 
+    $("body").show();
+
 }
 
 
 
 function Login() {
-    var userName = $("#username").val();
+    const userName = $("#username").val();
     var password = $("#password").val();
     $("#error").hide();
 
     $.ajax({
         type: "POST",
-        url: config.get("ServerAdress") + "loginweb",
+        url: config.get("ServerAdress") + "getlogin.php",
         data: {
             txtUser: userName,
             txtPassword: password
         },
-        dataType: "xml",
+        dataType: "text",
         success: function (xml) {
-            var result = $(xml).find("login");
-            if ($(result).attr("error") != "") {
+            if ($(xml).attr("error") != "") {
                 $("#error").show();
-                $("#error").text($(result).attr("error"));
+                $("#error").text($(xml).attr("error"));
             }
             else {
                 //login réussi.
-                config.set("connectionGuid", $(result).attr("guid"));
-                
+                config.set("connectionGuid", $(xml).attr("guid"));
+                config.set("username", userName);
+
                 window.location.replace("index.html");
             }
         },
