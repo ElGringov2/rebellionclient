@@ -110,6 +110,32 @@ function LoadGalaxy() {
                             $("#planetmodalinfos #planetFullImage").text($(xml).attr("image"));
                             $("#planetmodalinfos #planetHistory").text($(xml).attr("history"));
 
+
+                            var sCampaign = "";
+                            var row = 0;
+                            $(xml).find("campaign").children().each(function () {
+                                if ($(this).attr("Row") != row) {
+                                    if (row != 0) {
+                                        sCampaign += "</div>";
+
+                                    }
+                                    sCampaign += "<div class='row m-3 d-flex justify-content-left'>";
+                                    row = $(this).attr("Row")
+                                }
+                                var template = $("#missiontemplate").html();
+                                template = template.replace("src=\"\"", "src=\"./" + $(this).attr("gamelogo") + "\"");
+                                template = template.replace("[DESCRIPTION]", $(this).attr("Description"));
+                                template = template.replace("[NAME]", $(this).attr("Name"));
+                                template = template.replace("[REWARD]", $(this).attr("Reward"));
+                                // template = template.replace("[COLOR]", $(this).attr("Color"));
+                                // template = template.replace("[TYPE]", $(this).attr("Border"));
+                                template = template.replace("[CLASS]", $(this).attr("Class"));
+                                sCampaign += template;
+                            });
+                            sCampaign += "</div>";
+                            $("#planetmodalinfos #PlanetCampaign").append(sCampaign);
+
+
                             var buildingsString = "";
                             $(xml).find("buildings").children().each(function () {
                                 var template = $("#buildingtemplate").html();
@@ -254,7 +280,7 @@ function ShowBase() {
             //         medbayDescription += "<ul>" + pilot + "</ul>";
             //     })
             // }
-            
+
             $("#desktop #medbay_content").html(medbayDescription);
 
 

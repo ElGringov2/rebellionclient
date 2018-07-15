@@ -50,8 +50,8 @@
     </div>
 
     <div class="modal fade" id="planetmodal" tabindex="-1" role="dialog" style="border-color: white; border-radius: 2px;">
-        <div class="modal-dialog" role="document" style="  width: 90%;height: 90%;min-width: 90%;padding: 0;">
-            <div class="modal-content text-white" id="planetmodalinfos" style="height: 100%;width: 100%; background-color: black">
+        <div class="modal-dialog" role="document" style="  min-width: 90%; max-width: 90%; max-height: 90%; padding: 0;">
+            <div class="modal-content text-white scroll" id="planetmodalinfos" style="max-height: 100%; background-color: black">
 
             </div>
         </div>
@@ -206,7 +206,7 @@
 
 
     <div id="planetModalTemplate" style="display: none;">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs"  style="height:42px;"  id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Informations</a>
             </li>
@@ -220,12 +220,15 @@
         <div class="tab-content m-3" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <img id='planetFullImage' class="img-responsive" style="float:left;width:128px;height:128px;" src="" width="128px">
-                <div class="writing">
+                <div>
                     <h4 id='planetName'></h4>
                     <small id='planetDesc' class="lead"></small>
                     <hr>
                     <small id='planetHistory'></small>
-                    <br>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div id='PlanetCampaign' class='container-fluid '></div>
                 </div>
             </div>
             <div class="tab-pane fade" id="assets" role="tabpanel" aria-labelledby="assets-tab">
@@ -253,7 +256,7 @@
 
 
     <div id='missiontemplate' style="display: none;">
-        <div class="card ml-1 mr-1 bg-primary" style="width: 12rem;">
+        <div class="card ml-1 mr-1 [CLASS]" style="width: 12rem;">
             <div class="card-body">
                 <h6 class="card-title ">[NAME]</h6>
                 <div class="card-text ">

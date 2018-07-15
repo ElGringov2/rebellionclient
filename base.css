@@ -2,52 +2,63 @@
     font-family: "xwingfontfamily";
     src: url("xwing-miniatures.ttf");
 }
+
 @font-face {
     font-family: "xwingshipfontfamily";
     src: url("xwing-miniatures-ships.ttf");
 }
+
 .squadrons {
     background: black;
     color: lightgray;
     line-height: 1px;
     padding: 1px;
 }
+
 .squadronTitle {
     font-size: 15px;
     font-weight: bold;
     color: white;
 }
+
 .flightTitle {
     color: white;
     font-size: 15px;
     text-indent: 6px;
 }
+
 .pilotName {
     font-size: 14px;
     text-indent: 9px;
 }
+
 .xwingfont {
     font-family: "xwingfontfamily";
 }
+
 .xwingshipfont {
     font-family: "xwingshipfontfamily";
 }
+
 .statskill {
-    color:orange;
+    color: orange;
 }
+
 .statattack {
     color: red;
 }
+
 .statagility {
     color: green;
 }
+
 .stathull {
     color: gold;
 }
+
 .statshield {
     color: cyan;
 }
-
 
 .buildings-list {
     overflow: scroll;
@@ -58,7 +69,6 @@
     overflow-y: auto;
 }
 
-
 .loader {
     margin: auto;
     top: calc(50% - 30px);
@@ -67,43 +77,76 @@
     border-top: 2px solid white;
     width: 60px;
     height: 60px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
+    -webkit-animation: spin 2s linear infinite;
+    /* Safari */
     animation: spin 2s linear infinite;
-  }
-  
-  /* Safari */
-  @-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+}
 
+/* Safari */
 
-  #cf {
-    position:relative;
-    margin:0 auto;
-  }
-  
-  #cf img {
-    position:absolute;
-    left:0;
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#cf {
+    position: relative;
+    margin: 0 auto;
+}
+
+#cf img {
+    position: absolute;
+    left: 0;
     -webkit-transition: opacity 1s ease-in-out;
     -moz-transition: opacity 1s ease-in-out;
     -o-transition: opacity 1s ease-in-out;
     transition: opacity 1s ease-in-out;
-  }
-  
-  #cf img.top:hover {
-    opacity:0;
-  }
+}
+
+#cf img.top:hover {
+    opacity: 0;
+}
+
+.planetdiv {
+    position: absolute;
+    height: 16px;
+}
+
+.mission-disable {
+    background-color: rgb(54, 54, 54);
+}
+
+.mission-success {
+    background-color: darkgreen;
+}
+
+.mission-failed {
+    background-color: darkred;
+}
 
 
-  .planetdiv {
-    position: absolute; 
-    height:16px;
-    
-  }
+
+.mission-xwing {
+    background-color: rgb(0, 68, 68);
+}
+
+.mission-legion {
+    background-color: indigo;
+}
+
+.mission-assault {
+    background-color: darkgoldenrod;
+}
