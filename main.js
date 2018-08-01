@@ -29,6 +29,13 @@ function UpdateUserInfos() {
     });
 }
 
+function SetMissionMenu() {
+    const { Menu, MenuItem } = remote
+    const menu = new Menu()
+    menu.append("")
+
+    $(".missionclass")
+}
 
 function ClearDesktop() {
     ShowWaitIndicator("#desktop");
@@ -89,6 +96,7 @@ function LoadGalaxy() {
 
             $("#desktop").append("</div>");
             $('[data-toggle="tooltip"]').tooltip();
+
             $(document).ready(function () {
                 $(".planetdiv").click(function () {
                     $.ajax({
@@ -123,6 +131,7 @@ function LoadGalaxy() {
                                     row = $(this).attr("Row")
                                 }
                                 var template = $("#missiontemplate").html();
+                                template = template.replace("mission_id", "mission_" + $(this).attr("databaseid"));
                                 template = template.replace("src=\"\"", "src=\"./" + $(this).attr("gamelogo") + "\"");
                                 template = template.replace("[DESCRIPTION]", $(this).attr("Description"));
                                 template = template.replace("[NAME]", $(this).attr("Name"));
@@ -152,7 +161,7 @@ function LoadGalaxy() {
                             var assetId = 0;
                             var flightName = "";
                             $("#planetmodalinfos #assets-list").html("");
-                            $(xml).find("assets").children().each(function () {
+                            $(xml).find("assets").find("pilots").children().each(function () {
                                 assetId++;
                                 if (flightName != $(this).attr("squadron") + ", " + $(this).attr("flight")) {
                                     flightName = $(this).attr("squadron") + ", " + $(this).attr("flight")
@@ -160,7 +169,7 @@ function LoadGalaxy() {
                                 }
                                 //var xml = $(this).find("pilot");
                                 var template = $("#pilotinlinetemplate").html();
-                                template = template.replace("id='pilot'", "id='assetpilot_" + assetId + "'");
+                                template = template.replace("id='inlinepilot'", "id='assetpilot_" + assetId + "'");
                                 template = template.replace("[PILOTNAME]", $(this).attr("name"));
                                 template = template.replace("[PILOTSHIPNAME]", $(this).attr("shipname"));
                                 template = template.replace("[SHIPLETTER]", $(this).attr("shipletter"));
@@ -173,8 +182,27 @@ function LoadGalaxy() {
                                 template = template.replace("[PILOTCOST]", $(this).attr("cost"));
                                 $("#planetmodalinfos #assets-list").append(template);
                             });
+                            var title = false;
+                            $(xml).find("assets").find("commandos").children().each(function () {
+                                assetId++;
+                                if (!title) {
+                                    $title = true;
+                                    $("#planetmodalinfos #assets-list").append("<h6>Commandos</h6>")
+
+                                }
+                                //var xml = $(this).find("pilot");
+                                var template = $("#commandoinlinetemplate").html();
+                                template = template.replace("id='commando'", "id='assetcommando_" + assetId + "'");
+                                template = template.replace("[COMMANDONAME]", $(this).attr("name"));
+                                template = template.replace("[MOVE]", $(this).attr("move"));
+                                template = template.replace("[ENDURANCE]", $(this).attr("endurance"));
+                                template = template.replace("[HEALTH]", $(this).attr("health"));
+                                template = template.replace("[EXP]", $(this).attr("experience"));
+                                template = template.replace("[GEARS]", $(this).attr("gears"));
+                                $("#planetmodalinfos #assets-list").append(template);
+                            });
                             flightName = "";
-                            $(xml).find("otherassets").children().each(function () {
+                            $(xml).find("otherassets").find("pilots").children().each(function () {
                                 assetId++;
                                 if (flightName != $(this).attr("squadron") + ", " + $(this).attr("flight")) {
                                     flightName = $(this).attr("squadron") + ", " + $(this).attr("flight")
@@ -193,6 +221,25 @@ function LoadGalaxy() {
                                 template = template.replace("[PILOTCOST]", $(this).attr("cost"));
                                 $("#planetmodalinfos #assets-list").append(template);
 
+                            });
+                            title = false;
+                            $(xml).find("otherassets").find("commandos").children().each(function () {
+                                assetId++;
+                                if (!title) {
+                                    $title = true;
+                                    $("#planetmodalinfos #assets-list").append("<h6>Commandos</h6>")
+
+                                }
+                                //var xml = $(this).find("pilot");
+                                var template = $("#commandoinlinetemplate").html();
+                                template = template.replace("id='commando'", "id='assetcommando_" + assetId + "'");
+                                template = template.replace("[COMMANDONAME]", $(this).attr("name"));
+                                template = template.replace("[MOVE]", $(this).attr("move"));
+                                template = template.replace("[ENDURANCE]", $(this).attr("endurance"));
+                                template = template.replace("[HEALTH]", $(this).attr("health"));
+                                template = template.replace("[EXP]", $(this).attr("experience"));
+                                template = template.replace("[GEARS]", $(this).attr("gears"));
+                                $("#planetmodalinfos #assets-list").append(template);
                             });
 
 

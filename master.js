@@ -8,10 +8,10 @@ let mainWindow
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600, icon:"./rebellion.ico", title: "Rebellion" })
+    mainWindow = new BrowserWindow({ width: 800, height: 600, icon:"./rebellion.ico", title: "Rebellion", webPreferences: {webSecurity: false} })
     mainWindow.setMenu(null)
 
-    config.set("ServerAdress", "http://localhost/RebellionServer/")
+    config.set("ServerAdress", "http://192.168.1.10/RebellionServer/")
     mainWindow.loadFile('login.html');
 
     // if (config.get("connectionGuid") == null) {

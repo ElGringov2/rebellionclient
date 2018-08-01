@@ -16,15 +16,15 @@ window.onload = function () {
             if (data == "VALID")
                 window.location.replace("index.html");
             else
-                ShowLogin();
+                ShowLogin("Validation du GUID impossible. Veuillez vous reconnecter.");
         },
-        error: function() {
-            ShowLogin();
+        error: function () {
+            ShowLogin("Impossible de joindre le serveur.");
         }
     })
 }
 
-function ShowLogin() {
+function ShowLogin(ErrorMessage) {
 
     var user = config.get("username");
 
@@ -34,7 +34,10 @@ function ShowLogin() {
     $("#username").val(user);
 
     $("body").show();
-
+    if (ErrorMessage != "") {
+        $("#error").attr("display", "inline");
+        $("#error").text(ErrorMessage);
+    }
 }
 
 

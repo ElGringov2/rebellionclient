@@ -169,7 +169,7 @@
     </div>
 
     <div id='pilotinlinetemplate' style="display: none;">
-        <div class="bg-dark text-light border border-secondary row">
+        <div class="bg-dark text-light border border-secondary row" id='inlinepilot'>
             <span class='col-3'>
                 <span id="pilotname">[PILOTNAME]</span>
                 <span id="pilotship" class="text-muted">[PILOTSHIPNAME]</span>
@@ -188,6 +188,22 @@
                 <span>[PILOTCOST]pts</span>&nbsp;
             </small>
             <span id='pilotability' class="col-6">[PILOTABILITY]</span>
+        </div>
+    </div>
+
+    
+    <div id='commandoinlinetemplate' style="display: none;">
+        <div class="bg-dark text-light border border-secondary row" id='commando'>
+            <span class='col-3'>
+                <span id="commandoname">[COMMANDONAME]</span>
+            </span>
+            <small class='col-3'>
+                <span id='commandohealth'>PV [HEALTH]</span>&nbsp;
+                <span id='commandoendu'>ENDURANCE [ENDURANCE]</span>&nbsp;
+                <span id='commandomove'>VITESSE [MOVE]</span>&nbsp;
+                <span id='commandoexp'>EXP [EXP]</span>&nbsp;
+            </small>
+            <span id='commandoGears' class="col-6">[GEARS]</span>
         </div>
     </div>
 
@@ -256,7 +272,7 @@
 
 
     <div id='missiontemplate' style="display: none;">
-        <div class="card ml-1 mr-1 [CLASS]" style="width: 12rem;">
+        <div id='mission_id' class="card ml-1 mr-1 [CLASS] missionclass" style="width: 12rem;">
             <div class="card-body">
                 <h6 class="card-title ">[NAME]</h6>
                 <div class="card-text ">
@@ -276,7 +292,7 @@
             Maximize();
             UpdateUserInfos();
             LoadGalaxy();
-
+            SetMissionMenu();
         });
     </script>
 
