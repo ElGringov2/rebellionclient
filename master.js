@@ -8,10 +8,13 @@ let mainWindow
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600, icon:"./rebellion.ico", title: "Rebellion", webPreferences: {webSecurity: false} })
+    mainWindow = new BrowserWindow({ width: 800, height: 600, icon:"./rebellion.ico", title: "Rebellion" })
     mainWindow.setMenu(null)
-
-    config.set("ServerAdress", "http://192.168.1.10/RebellionServer/")
+    mainWindow.eval = global.eval = function () {
+        throw new Error(`Désolé, cette application ne supporte pas window.eval().`)
+      }
+    //config.set("ServerAdress", "http://192.168.1.10/RebellionServer/")
+    config.set("ServerAdress", "http://localhost/RebellionServer/")
     mainWindow.loadFile('login.html');
 
     // if (config.get("connectionGuid") == null) {

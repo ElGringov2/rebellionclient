@@ -30,11 +30,11 @@ function UpdateUserInfos() {
 }
 
 function SetMissionMenu() {
-    const { Menu, MenuItem } = remote
-    const menu = new Menu()
-    menu.append("")
+//     const { Menu, MenuItem } = remote
+//     const menu = new Menu()
+//     menu.append("")
 
-    $(".missionclass")
+//     $(".missionclass")
 }
 
 function ClearDesktop() {
@@ -115,7 +115,7 @@ function LoadGalaxy() {
 
                             $("#planetmodalinfos #planetName").text($(xml).attr("name"));
                             $("#planetmodalinfos #planetDesc").text($(xml).attr("description"));
-                            $("#planetmodalinfos #planetFullImage").text($(xml).attr("image"));
+                            $("#planetmodalinfos #planetFullImage").attr("src", $(xml).attr("image"));
                             $("#planetmodalinfos #planetHistory").text($(xml).attr("history"));
 
 
