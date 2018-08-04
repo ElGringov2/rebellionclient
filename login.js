@@ -6,15 +6,22 @@ const { app, BrowserWindow } = require('electron');
 window.onload = function () {
 
 
+    var guid = config.get("connectionGuid");
+    if (guid == null) guid = "";
+
     $.ajax({
         type: "POST",
         url: config.get("ServerAdress") + "getvalidateguid.php",
         data: {
-            verifyguid: config.get("connectionGuid")
+            verifyguid: guid
         },
         success: function (data) {
             if (data == "VALID")
                 window.location.replace("index.html");
+            else if (data == "CHOOSECOMMANDER")
+                window.location.replace("configurefirst.html");
+            else if (data == "DRAFTXWING")
+                window.location.replace("draftxwing.html");
             else
                 ShowLogin("Validation du GUID impossible. Veuillez vous reconnecter.");
         },
@@ -44,7 +51,7 @@ function ShowLogin(ErrorMessage) {
 
 function Login() {
     const userName = $("#username").val();
-    var password = $("#password").val();
+    const password = $("#password").val();
     $("#error").hide();
 
     $.ajax({
@@ -61,11 +68,16 @@ function Login() {
                 $("#error").text($(xml).attr("error"));
             }
             else {
+
                 //login réussi.
                 config.set("connectionGuid", $(xml).attr("guid"));
                 config.set("username", userName);
-
-                window.location.replace("index.html");
+                if ($(xml).attr("action") == "choosecommander")
+                    window.location.replace("configurefirst.html");
+                else if ($(xml).attr("action") == "draftxwing")
+                    window.location.replace("draftxwing.html");
+                else
+                    window.location.replace("index.html");
             }
         },
         error: function () {
@@ -74,4 +86,9 @@ function Login() {
         }
 
     });
+}
+
+
+function Create() {
+    window.location.replace("join.html");
 }

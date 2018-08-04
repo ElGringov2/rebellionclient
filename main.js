@@ -450,9 +450,16 @@ function LoadResume() {
         type: "POST",
         url: config.get("ServerAdress") + "/getresume",
         data: { guid: config.get("connectionGuid") },
-        dataType: "html",
-        success: function (html) {
-            $("#desktop").html(html);
+        dataType: "xml",
+        success: function (xml) {
+            var template = $("#resumetemplate").html();
+
+
+
+
+
+            
+            $("#desktop").html(template);
 
         }
     });

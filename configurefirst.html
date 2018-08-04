@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang='fr'>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Rebellion - Nouvel utilisateur</title>
+</head>
+
+<body style='background-color: black;'>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="./cfgFirst.js"></script>
+    <div class="container footer">
+        <div class="d-flex justify-content-center">
+            <img class="img-fluid" src="./logoxwing.png" />
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="form">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Nom de votre commandant:</span>
+                    </div>
+                    <input id="txtCommander" type="text" name="txtCommander" class="form-control" placeholder="Nom d'utilisateur" aria-label="commanderName"
+                        aria-describedby="basic-addon1">
+                </div>
+                <p class="text-light">Profil: </p>
+                <div class='row'>
+                    <div class='col'>
+                        <div class="card">
+                            <div class="card-header" id="commander1name"></div>
+                            <div class="card-text" id="commander1text"></div>
+                            <button class="btn btn-primary" onclick="ChooseCommander1()">Choisir ce commandant</button>
+                        </div>
+                    </div>
+                    <div class='col'>
+                        <div class="card">
+                            <div class="card-header" id="commander2name"></div>
+                            <div class="card-text" id="commander2text"></div>
+                            <button class="btn btn-primary" onclick="ChooseCommander2()">Choisir ce commandant</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="alert alert-danger m-3" role="alert" id='errorMail' style="display: none;">L'adresse mail est incohérente.</div>
+        <div class="alert alert-danger m-3" role="alert" id='errorPassword' style="display: none;">Les mots de passe ne correspondent pas.</div>
+
+
+</body>
+
+</html>
