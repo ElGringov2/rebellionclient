@@ -9,6 +9,7 @@ function Update(cmdId) {
         data: {
             guid: config.get("connectionGuid"),
             cmdName: $("#txtCommander").val(),
+            squadName: $("#txtSquadronName").val(),
             selectedCmd: cmdId
         },
         dataType: "text",

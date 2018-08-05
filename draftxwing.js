@@ -9,10 +9,18 @@ $(function () {
         dataType: "xml",
         success: function (xmlData) {
             var xml = $(xmlData).find("draft");
+            if ($(xml).attr("done") != undefined) {
+                window.location.replace("index.html");
+                return;
+            }
+
             if ($(xml).children().length == 0) {
-                $("#content").text("En attente d'un autre joueur...");
+                $("#content").html("<p class='text-light'>Le draft n'a pas encore commencé, ou est en attente d'un autre joueur...</p>");
+                $("#content").append("<button onclick='window.location.reload()' class='btn btn-secondary'>Actualiser</button>");
             }
             else {
+                const { remote } = require('electron')
+                remote.BrowserWindow.getFocusedWindow().maximize();
                 var assetId = 0;
                 var ship = "";
                 $(xml).children().each(function () {
@@ -40,6 +48,9 @@ $(function () {
             }
 
 
+        },
+        error: function (status, error) {
+            alert (error);
         }
     });
 
@@ -71,12 +82,8 @@ $(function () {
                     });
 
                 });
-
-
-
-
-
             });
+            $("#squadTitle").text("Votre escadron: " + assetId + "/12");
 
         }
     });
