@@ -17,50 +17,6 @@ function createWindow() {
     config.set("ServerAdress", "http://localhost/RebellionServer/")
     mainWindow.loadFile('login.html');
 
-    // if (config.get("connectionGuid") == null) {
-    //     mainWindow.loadFile('login.html');
-    // }
-    // else {
-    //     // const net = require('electron').net
-    //     // const request = net.request({
-    //     //     method: "POST",
-    //     //     url: config.get("ServerAdress") + "validateguid.php"
-    //     // });
-    //     // let body = ''
-    //     // request.on('response', (response) => {
-
-    //     //     // check response.statusCode to determine if the request succeeded
-    //     //     console.log(`STATUS: ${response.statusCode}`)
-    //     //     console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
-
-    //     //     // capture body of response 
-    //     //     // - can be called more than once for large result
-    //     //     response.on('data', (chunk) => {
-    //     //         console.log(`BODY: ${chunk}`)
-    //     //         body += chunk.toString()
-    //     //     })
-
-    //     //     // when response is complete, print body
-    //     //     response.on('end', () => {
-    //     //         if (body == "VALID")
-    //     //             mainWindow.loadFile('index.html');
-    //     //         else
-    //     //             mainWindow.loadFile('login.html');
-
-    //     //     })
-    //     // })
-    //     // request.on("error", (error) => {
-    //     //     mainWindow.loadFile('login.html');
-    //     // });
-    //     // const querystring = require('querystring');
-    //     // var postData = querystring.stringify({
-    //     //     'verifyguid' :  config.get("connectionGuid")
-    //     // });
-    //     // request.write(postData);
-    //     // request.end();
-    // }
-
-
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools()

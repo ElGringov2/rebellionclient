@@ -38,7 +38,11 @@
             </button>
 
         </div>
-        <button class='btn btn-dark float-sm-right' onclick="Disconnect('[CONNECTIONGUID]')">Déconnexion</button>
+        <div class="float-right">
+            <button class="btn btn-info btn-sm" onclick="ShowPrefs()">Préferences</button>
+            <button class="btn btn-warning btn-sm" onclick="Disconnect()">Déconnexion</button>
+        </div>
+
     </nav>
 
 
@@ -195,7 +199,7 @@
         </div>
     </div>
 
-    
+
     <div id='commandoinlinetemplate' style="display: none;">
         <div class="bg-dark text-light border border-secondary row" id='commando'>
             <span class='col-3'>
@@ -226,7 +230,7 @@
 
 
     <div id="planetModalTemplate" style="display: none;">
-        <ul class="nav nav-tabs"  style="height:42px;"  id="myTab" role="tablist">
+        <ul class="nav nav-tabs" style="height:42px;" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Informations</a>
             </li>

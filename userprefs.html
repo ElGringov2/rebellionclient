@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang='fr'>
+
+<head>
+    <!-- Required meta tags -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Rebellion - Préferences d'utilisateur</title>
+
+</head>
+
+<body style='background-color: black;'>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+
+    <style>
+        body {
+            background-image: url("wallpaper_rebels.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <!-- <script src="./userprefs.js"></script> -->
+    <div class="container" style="top: 50%;left: 50%;position:  absolute;transform: translate(-50%,-50%);">
+
+        <div class="justify-content-center">
+
+
+            <p class="text-light">Disponibilitées: </p>
+            <div class="container-fluid" id='dispolist'>
+
+            </div>
+
+        </div>
+
+        <div id='dispotemplate' style="display: none">
+            <div class="col card p-1">
+                <div class="card-body p-1">
+                    <h6 class="card-title">[DATE]</h6>
+                    <div class="card-text ">
+                        <div class='btn-group btn-group-toggle  flex-wrap' data-toggle="buttons">
+                            <button class="btn btn-sm btn-secondary [ACTIVE0]" id='btn[DAY]_0' onclick="setPlanning([DAY], 0)">
+                                <input type="radio" name='dispo[DAY]' id='setday[DAY]to0' [CHECKED0]>
+                                <small>indisponible</small>
+                                </input>
+                            </button>
+                            <button class="btn btn-sm btn-secondary  [ACTIVE1]" id='btn[DAY]_1' onclick="setPlanning([DAY], 1)">
+                                <input type="radio" name='dispo[DAY]' id='setday[DAY]to1' [CHECKED1]>1</input>
+                            </button>
+                            <button class="btn btn-sm btn-secondary  [ACTIVE2]" id='btn[DAY]_2' onclick="setPlanning([DAY], 2)">
+                                <input type="radio" name='dispo[DAY]' id='setday[DAY]to2' [CHECKED2]>2</input>
+                            </button>
+                            <button class="btn btn-sm btn-secondary  [ACTIVE3]" id='btn[DAY]_3' onclick="setPlanning([DAY], 3)">
+                                <input type="radio" name='dispo[DAY]' id='setday[DAY]to3' [CHECKED3]>3</input>
+                            </button>
+                            <button class="btn btn-sm btn-secondary  [ACTIVE4]" id='btn[DAY]_4' onclick="setPlanning([DAY], 4)">
+                                <input type="radio" name='dispo[DAY]' id='setday[DAY]to4' [CHECKED4]>
+                                <small>Hebergement</small>
+                                </input>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./userprefs.js"></script>
+</body>
+
+</html>

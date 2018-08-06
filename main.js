@@ -1,15 +1,28 @@
 const Config = require("electron-config");
 const config = new Config();
 const { app, BrowserWindow } = require('electron');
+const { remote } = require('electron')
 
 function Maximize() {
-    const { remote } = require('electron')
     remote.BrowserWindow.getFocusedWindow().maximize();
 }
 
-function Disconnect(ConnectionGUID) {
+function Disconnect() {
     config.delete("connectionGuid");
     window.location.replace('./login.html');
+}
+
+function ShowPrefs() {
+
+    let win = new remote.BrowserWindow({
+        parent: remote.getCurrentWindow(),
+        modal: true,
+        icon: "./rebellion.ico",
+        title: "Préferences"
+    })
+    //win.setMenu(null)
+
+    win.loadFile("./userprefs.html");
 }
 
 function UpdateUserInfos() {
@@ -30,11 +43,11 @@ function UpdateUserInfos() {
 }
 
 function SetMissionMenu() {
-//     const { Menu, MenuItem } = remote
-//     const menu = new Menu()
-//     menu.append("")
+    //     const { Menu, MenuItem } = remote
+    //     const menu = new Menu()
+    //     menu.append("")
 
-//     $(".missionclass")
+    //     $(".missionclass")
 }
 
 function ClearDesktop() {
@@ -458,7 +471,7 @@ function LoadResume() {
 
 
 
-            
+
             $("#desktop").html(template);
 
         }
