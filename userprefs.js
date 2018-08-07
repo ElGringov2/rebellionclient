@@ -35,8 +35,8 @@ $(function () {
             iDay = 0;
             var str = "<div class=\"row\">";
 
-            var now = new Date(Date.now());
-            now.setDate(now.getDate());
+            var now = new Date(Date.now() );
+            now.setDate(now.getDate()+ iDay);
             for (var i = 0; i < now.getDay("monday"); i++)
                 str += "<div class=\"col card p-1 bg-secondary \"></div>";
 
@@ -79,7 +79,7 @@ $(function () {
             now = new Date(Date.now());
             now.setDate(now.getDate() + iDay);
 
-            for (var i = now.getDay("monday"); i > 0; i--)
+            for (var i = now.getDay("monday"); i < 7; i++)
                 str += "<div class=\"col card p-1 bg-secondary \"></div>";
 
 

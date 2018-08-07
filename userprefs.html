@@ -28,12 +28,51 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <!-- <script src="./userprefs.js"></script> -->
-    <div class="container" style="top: 50%;left: 50%;position:  absolute;transform: translate(-50%,-50%);">
+    <div class="container" >
 
         <div class="justify-content-center">
 
-
             <p class="text-light">Disponibilitées: </p>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col card p-1">
+                        <div class="card-body p-1">
+                            <h6 class="card-text">Lundi</h6>
+                        </div>
+                    </div>
+                    <div class="col card p-1">
+                        <div class="card-body p-1">
+                            <h6 class="card-text">Mardi</h6>
+                        </div>
+                    </div>
+                    <div class="col card p-1">
+                        <div class="card-body p-1">
+                            <h6 class="card-text">Mercredi</h6>
+                        </div>
+                    </div>
+                    <div class="col card p-1">
+                        <div class="card-body p-1">
+                            <h6 class="card-text">Jeudi</h6>
+                        </div>
+                    </div>
+                    <div class="col card p-1">
+                        <div class="card-body p-1">
+                            <h6 class="card-text">Vendredi</h6>
+                        </div>
+                    </div>
+                    <div class="col card p-1">
+                        <div class="card-body p-1">
+                            <h6 class="card-text">Samedi</h6>
+                        </div>
+                    </div>
+                    <div class="col card p-1">
+                        <div class="card-body p-1">
+                            <h6 class="card-text">Dimanche</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="container-fluid" id='dispolist'>
 
             </div>
@@ -46,21 +85,21 @@
                     <h6 class="card-title">[DATE]</h6>
                     <div class="card-text ">
                         <div class='btn-group btn-group-toggle  flex-wrap' data-toggle="buttons">
-                            <button class="btn btn-sm btn-secondary [ACTIVE0]" id='btn[DAY]_0' onclick="setPlanning([DAY], 0)">
+                            <button class="btn btn-sm btn-outline-secondary [ACTIVE0]" id='btn[DAY]_0' onclick="setPlanning([DAY], 0)">
                                 <input type="radio" name='dispo[DAY]' id='setday[DAY]to0' [CHECKED0]>
                                 <small>indisponible</small>
                                 </input>
                             </button>
-                            <button class="btn btn-sm btn-secondary  [ACTIVE1]" id='btn[DAY]_1' onclick="setPlanning([DAY], 1)">
+                            <button class="btn btn-sm btn-outline-secondary  [ACTIVE1]" id='btn[DAY]_1' onclick="setPlanning([DAY], 1)">
                                 <input type="radio" name='dispo[DAY]' id='setday[DAY]to1' [CHECKED1]>1</input>
                             </button>
-                            <button class="btn btn-sm btn-secondary  [ACTIVE2]" id='btn[DAY]_2' onclick="setPlanning([DAY], 2)">
+                            <button class="btn btn-sm btn-outline-secondary  [ACTIVE2]" id='btn[DAY]_2' onclick="setPlanning([DAY], 2)">
                                 <input type="radio" name='dispo[DAY]' id='setday[DAY]to2' [CHECKED2]>2</input>
                             </button>
-                            <button class="btn btn-sm btn-secondary  [ACTIVE3]" id='btn[DAY]_3' onclick="setPlanning([DAY], 3)">
+                            <button class="btn btn-sm btn-outline-secondary  [ACTIVE3]" id='btn[DAY]_3' onclick="setPlanning([DAY], 3)">
                                 <input type="radio" name='dispo[DAY]' id='setday[DAY]to3' [CHECKED3]>3</input>
                             </button>
-                            <button class="btn btn-sm btn-secondary  [ACTIVE4]" id='btn[DAY]_4' onclick="setPlanning([DAY], 4)">
+                            <button class="btn btn-sm btn-outline-secondary  [ACTIVE4]" id='btn[DAY]_4' onclick="setPlanning([DAY], 4)">
                                 <input type="radio" name='dispo[DAY]' id='setday[DAY]to4' [CHECKED4]>
                                 <small>Hebergement</small>
                                 </input>

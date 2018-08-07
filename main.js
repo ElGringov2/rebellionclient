@@ -20,7 +20,7 @@ function ShowPrefs() {
         icon: "./rebellion.ico",
         title: "Préferences"
     })
-    //win.setMenu(null)
+    win.setMenu(null)
 
     win.loadFile("./userprefs.html");
 }
@@ -306,7 +306,7 @@ function ShowBase() {
                     hangarDescription += "<h6>Escadron " + flightName + "</h6>";
                 }
                 var template = $("#pilotinlinetemplate").html();
-                template = template.replace("id='pilot'", "id='groundedpilot_" + iGrounded + "'");
+                template = template.replace("id=\"inlinepilot\"", "id='groundedpilot_" + iGrounded + "'");
                 template = template.replace("[PILOTNAME]", $(this).attr("name"));
                 template = template.replace("[PILOTSHIPNAME]", $(this).attr("shipname"));
                 template = template.replace("[SHIPLETTER]", $(this).attr("shipletter"));
@@ -324,29 +324,17 @@ function ShowBase() {
 
             hangarDescription += "";
 
-            // if ($(xml).attr("Grounded") != "") {
-            //     hangarDescription += "<br> Actuellement au sol:";
-            //     $(xml).attr("Grounded").split("|").forEach(function (pilot) {
-            //         hangarDescription += "<ul>" + pilot + "</ul>";
-            //     })
-            // }
             $("#desktop #hangar_right_col").html(hangarDescription);
 
             var medbayDescription = "Capacité de l'infirmerie: " + $(xml).attr("MedbayCapacity") + " (Cuves à bacta: ";
             if ($(xml).attr("MedbayBactaTanks") == "0") medbayDescription += "Aucune.)"; else medbayDescription += $(xml).attr("MedbayBactaTanks") + ")";
-            // if ($(xml).attr("Sick") != "") {
-            //     medbayDescription += "<br> Actuellement en convalescence:";
-            //     $(xml).attr("Sick").split("|").forEach(function (pilot) {
-            //         medbayDescription += "<ul>" + pilot + "</ul>";
-            //     })
-            // }
+
 
             $("#desktop #medbay_content").html(medbayDescription);
 
 
 
-        },
-        error: (error) => alert(error)
+        }
     });
     $.ajax({
         type: "POST",
@@ -442,19 +430,23 @@ function ShowBase() {
 
             });
 
-            $('input[name=CheckForTakeoff]').each(function () {
-                $(this).click(function () {
-                    var totalCost = parseInt($("#newSquadronCost").text());
-                    if (this.checked)
-                        totalCost += parseInt(this.value);
-                    else
-                        totalCost -= parseInt(this.value);
-                    $("#newSquadronCost").text(totalCost);
-                });
-            });
+            // $('input[name=CheckForTakeoff]').each(function () {
+            //     $(this).click(function () {
+            //         var totalCost = parseInt($("#newSquadronCost").text());
+            //         if (this.checked)
+            //             totalCost += parseInt(this.value);
+            //         else
+            //             totalCost -= parseInt(this.value);
+            //         $("#newSquadronCost").text(totalCost);
+            //     });
+            // });
         }
     });
 }
+
+
+
+
 
 
 function LoadResume() {
@@ -520,100 +512,78 @@ function OpenCrate(ConnectionGUID, CrateID) {
 
 }
 
-function ShowSquadrons(ConnectionGUID) {
-    $.ajax({
-        url: "squadrons",
-        dataType: "xml",
-        type: "POST",
-        data: { guid: ConnectionGUID },
-        success: function (xml) {
-            var squadTemplate = "";
-            var flightTemplate = "";
-            var pilotTemplate = "";
-            var pilotStatsTemplate = "";
-            $.ajax({ url: "template_squadron.html", async: false, success: function (html) { squadTemplate = html; } });
-            $.ajax({ url: "template_flight.html", async: false, success: function (html) { flightTemplate = html; } });
-            $.ajax({ url: "template_pilot.html", async: false, success: function (html) { pilotTemplate = html; } });
-            $.ajax({ url: "template_pilotstats.html", async: false, success: function (html) { pilotStatsTemplate = html; } });
-            var res = "";
-            $(xml).find("squadrons").children().each(
-                function (squadIndex) {
-                    res += squadTemplate;
-                    res = replaceAll(res, "[SQUADRONNAME]", $(this).attr("name"));
-                    var flights = "";
-                    $(this).children().each(function (flightIndex) {
-                        flights += flightTemplate;
-                        flights = replaceAll(flights, "[FLIGHTNAME]", $(this).attr("name"));
-                        var pilots = "";
-                        $(this).children().each(function (pilotIndex) {
-                            pilots += pilotTemplate;
-                            pilots = replaceAll(pilots, "[PILOTSHIPNAME]", $(this).attr("shipname"));
-                            pilots = replaceAll(pilots, "[PILOTNAME]", $(this).attr("name"));
-                            pilots = replaceAll(pilots, "[PILOTABILITY]", $(this).attr("pilotability"));
-                            var stats = pilotStatsTemplate;
-                            stats = replaceAll(stats, "[SHIPLETTER]", $(this).attr("shipletter"));
-                            stats = replaceAll(stats, "[PILOTSKILL]", $(this).attr("pilotskill"));
-                            stats = replaceAll(stats, "[SHIPATTACK]", $(this).attr("shipattack"));
-                            stats = replaceAll(stats, "[SHIPAGILITY]", $(this).attr("shipagility"));
-                            stats = replaceAll(stats, "[SHIPHULL]", $(this).attr("shiphull"));
-                            stats = replaceAll(stats, "[SHIPSHIELD]", $(this).attr("shipshield"));
+// function ShowSquadrons(ConnectionGUID) {
+//     $.ajax({
+//         url: "squadrons",
+//         dataType: "xml",
+//         type: "POST",
+//         data: { guid: ConnectionGUID },
+//         success: function (xml) {
+//             var squadTemplate = "";
+//             var flightTemplate = "";
+//             var pilotTemplate = "";
+//             var pilotStatsTemplate = "";
+//             $.ajax({ url: "template_squadron.html", async: false, success: function (html) { squadTemplate = html; } });
+//             $.ajax({ url: "template_flight.html", async: false, success: function (html) { flightTemplate = html; } });
+//             $.ajax({ url: "template_pilot.html", async: false, success: function (html) { pilotTemplate = html; } });
+//             $.ajax({ url: "template_pilotstats.html", async: false, success: function (html) { pilotStatsTemplate = html; } });
+//             var res = "";
+//             $(xml).find("squadrons").children().each(
+//                 function (squadIndex) {
+//                     res += squadTemplate;
+//                     res = replaceAll(res, "[SQUADRONNAME]", $(this).attr("name"));
+//                     var flights = "";
+//                     $(this).children().each(function (flightIndex) {
+//                         flights += flightTemplate;
+//                         flights = replaceAll(flights, "[FLIGHTNAME]", $(this).attr("name"));
+//                         var pilots = "";
+//                         $(this).children().each(function (pilotIndex) {
+//                             pilots += pilotTemplate;
+//                             pilots = replaceAll(pilots, "[PILOTSHIPNAME]", $(this).attr("shipname"));
+//                             pilots = replaceAll(pilots, "[PILOTNAME]", $(this).attr("name"));
+//                             pilots = replaceAll(pilots, "[PILOTABILITY]", $(this).attr("pilotability"));
+//                             var stats = pilotStatsTemplate;
+//                             stats = replaceAll(stats, "[SHIPLETTER]", $(this).attr("shipletter"));
+//                             stats = replaceAll(stats, "[PILOTSKILL]", $(this).attr("pilotskill"));
+//                             stats = replaceAll(stats, "[SHIPATTACK]", $(this).attr("shipattack"));
+//                             stats = replaceAll(stats, "[SHIPAGILITY]", $(this).attr("shipagility"));
+//                             stats = replaceAll(stats, "[SHIPHULL]", $(this).attr("shiphull"));
+//                             stats = replaceAll(stats, "[SHIPSHIELD]", $(this).attr("shipshield"));
 
-                            pilots = replaceAll(pilots, "[PILOTSTATS]", stats);
-                        });
+//                             pilots = replaceAll(pilots, "[PILOTSTATS]", stats);
+//                         });
 
-                        flights = replaceAll(flights, "[PILOTS]", pilots);
-                    });
-                    res = replaceAll(res, "[FLIGHTS]", flights)
-                }
-            );
-            // $("#squadronmodalcontent").append(res + "</div>");
-
-
-            // $("#squadronmodalcontent").append("</div>");
-            $("#squadronmodalcontent").html("<div class='squadrons'>" + res + "</div>");
+//                         flights = replaceAll(flights, "[PILOTS]", pilots);
+//                     });
+//                     res = replaceAll(res, "[FLIGHTS]", flights)
+//                 }
+//             );
+//             // $("#squadronmodalcontent").append(res + "</div>");
 
 
-            $("#squadronmodal").modal();
-        }
+//             // $("#squadronmodalcontent").append("</div>");
+//             $("#squadronmodalcontent").html("<div class='squadrons'>" + res + "</div>");
+
+
+//             $("#squadronmodal").modal();
+//         }
+//     })
+// }
+
+
+
+
+function OpenTakeOff()
+{
+    let win = new remote.BrowserWindow({
+        parent: remote.getCurrentWindow(),
+        modal: true,
+        icon: "./rebellion.ico",
+        title: "Décollage"
     })
-}
+    win.setMenu(null)
+    win.maximize();
+    win.webContents.openDevTools();
 
-
-
-function CreateSquadron(ConnectionGUID) {
-    $(".navbar").hide();
-
-    ClearDesktop();
-
-    $.ajax({
-        url: "/createsquad",
-        dataType: "text",
-        type: "POST",
-        data: { guid: ConnectionGUID },
-        success: function (html) {
-            $("#desktop").html(html);
-        },
-    });
-}
-
-function SelectShip(id, newXWS, ConnectionGUID) {
-    $.ajax({
-        url: "/createsquad",
-        type: "POST",
-        data: { guid: ConnectionGUID, setshipid: id, xws: newXWS },
-        success: function (xml) {
-            //les stats
-            var pilotStatsTemplate = "";
-            $.ajax({ url: "template_pilotstats.html", async: false, success: function (html) { pilotStatsTemplate = html; } });
-            var stats = pilotStatsTemplate;
-            stats = replaceAll(stats, "[SHIPLETTER]", $(xml).attr("shipletter"));
-            stats = replaceAll(stats, "[PILOTSKILL]", $(xml).attr("pilotskill"));
-            stats = replaceAll(stats, "[SHIPATTACK]", $(xml).attr("shipattack"));
-            stats = replaceAll(stats, "[SHIPAGILITY]", $(xml).attr("shipagility"));
-            stats = replaceAll(stats, "[SHIPHULL]", $(xml).attr("shiphull"));
-            stats = replaceAll(stats, "[SHIPSHIELD]", $(xml).attr("shipshield"));
-            $("#ShipName" + id).html($(xml).attr("shipname"));
-            $("#stats" + id).html(stats);
-        },
-    });
+    win.loadFile("./takeoff.html");
 }

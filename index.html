@@ -96,10 +96,10 @@
                                     <div class="col text-light" id='hangar_left_col'>
 
                                     </div>
-                                    <div class="col text-light">
+                                    <div class="col text-light scroll">
                                         <p>Pilotes au sol:</p>
                                         <div>
-                                            <button class="btn btn-primary">Faire décoller des pilotes</button>
+                                            <button class="btn btn-primary" onclick="OpenTakeOff()">Faire décoller des pilotes</button>
                                         </div>
                                         <p id='hangar_right_col'></p>
                                     </div>
@@ -299,8 +299,9 @@
         $(function () {
             Maximize();
             UpdateUserInfos();
-            LoadGalaxy();
+            //LoadGalaxy();
             SetMissionMenu();
+            OpenTakeOff();
         });
     </script>
 
