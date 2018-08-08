@@ -32,7 +32,7 @@
 
 
 
-    <div class="container" style="height: 90%; width: 90%; margin: auto;">
+    <div class="container">
 
         <div class="row ">
             <div class="col text-light">
@@ -72,8 +72,8 @@
                 </small>
                 <span id='pilotability' class="col-6"></span>
             </div>
-            <div class="row" id='upgrades'>
-                
+            <div class="row container" id='upgrades'>
+
             </div>
         </div>
     </div>
@@ -81,13 +81,10 @@
         <div class="bg-dark text-light border border-secondary row" id='' draggable="true" ondragstart="drag(event)">
             <div class="container">
                 <div class='row'>
-                    <!-- <div class='col'> -->
                     <span id="pilotname"></span>
                     <span id="pilotship" class="text-muted"></span>
-                    <!-- </div> -->
                 </div>
                 <div class='row'>
-                    <!-- <div class='col'> -->
                     <small class='pilotStats'>
                         <span class='xwingshipfont statskill' id='pilotshipletter'></span>
                         <span class='statskill' id='pilotskill'></span>&nbsp;
@@ -101,14 +98,32 @@
                         <span class='statshield' id='shipshield'></span>&nbsp;
                         <span id='pilotcost'></span>pts&nbsp;
                     </small>
-                    <!-- </div> -->
                 </div>
                 <div class='row'>
-                    <!-- <div class='col'> -->
                     <span id='pilotability'></span>
-                    <!-- </div> -->
+                </div>
+                <div class="row container" id='upgrades' style="display: none;">
+
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div style="display: none" id='upgradecontenair'>
+        <div class="dropdown">
+            <button class="btn btn-secondary btn-sm btn-block dropdown-toggle" type="button" id="upgradebutton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id='upgrademenu'>
+            </div>
+        </div>
+    </div>
+
+    <div id='upgradetemplate' style="display: none">
+        <div onclick="SelectUpgrade(this)">
+            <span id='upgradename'></span>:&nbsp;
+            <span id='upgradedesc'></span>,&nbsp;
+            <span id='upgradecost'></span>pts
         </div>
     </div>
 

@@ -35,6 +35,7 @@ function UpdatePilotTemplate(TemplateID, xml, id) {
     var template = $.parseHTML($.trim($("#" + TemplateID).html()));
 
     $(template).first().attr("id", "pilot_" + id);
+    $(template).first().attr("databaseid", $(xml).attr("id"));
     $(template).find("#pilotname").text($(xml).attr("name"));
     $(template).find("#pilotship").text($(xml).attr("shipname"));
     $(template).find("#pilotshipletter").text($(xml).attr("shipletter"));
@@ -46,6 +47,22 @@ function UpdatePilotTemplate(TemplateID, xml, id) {
     $(template).find("#pilotability").text($(xml).attr("pilotability"));
     $(template).find("#pilotcost").text($(xml).attr("cost"));
 
+    var slotID = 0;
+    $(xml).find("upgrades").children().each(function () {
+        var upgradeContenairTemplate = $.parseHTML($.trim($("#upgradecontenair").html()));
+        $(upgradeContenairTemplate).first().attr("id", "upgradeslot_" + slotID);
+        $(upgradeContenairTemplate).first().attr("slot", slotID);
+        $(upgradeContenairTemplate).first().attr("type", $(this).attr("type"));
+        $(upgradeContenairTemplate).find("#upgradebutton").text($(this).attr("type"));
+
+        // var upgradeTemplate = $.parseHTML($.trim($("#upgradetemplate").clone().html()));
+        // $(upgradeTemplate).first().attr("id", "upgrade_" + $(this).attr("index"));
+        // $(upgradeTemplate).first().attr("slot", slotID);
+        // $(upgradeTemplate).first().attr("type", $(this).attr("type"));
+        // $(upgradeTemplate).find("#upgradename").html($(this).attr("type"));
+        $(template).find("#upgrades").append(upgradeContenairTemplate);
+        slotID++;
+    })
 
     return $("<div />").append($(template).clone()).html();
 }
@@ -55,6 +72,7 @@ function SwitchTemplate(TemplateID, divID) {
     var data = $("#" + divID);
     var template = $.parseHTML($.trim($("#" + TemplateID).html()));
     $(template).first().attr("id", $(data).attr("id"));
+    $(template).first().attr("databaseid", $(data).attr("databaseid"));
     $(template).find("#pilotname").text($(data).find("#pilotname").text());
     $(template).find("#pilotship").text($(data).find("#pilotship").text());
     $(template).find("#pilotshipletter").text($(data).find("#pilotshipletter").text());
@@ -65,6 +83,7 @@ function SwitchTemplate(TemplateID, divID) {
     $(template).find("#shipshield").text($(data).find("#shipshield").text());
     $(template).find("#pilotability").text($(data).find("#pilotability").text());
     $(template).find("#pilotcost").text($(data).find("#pilotcost").text());
+    $(template).find("#upgrades").html($(data).find("#upgrades").html());
     return $("<div />").append($(template).clone()).html();
 }
 
@@ -110,25 +129,121 @@ function drag(ev) {
 
 function drop(ev) {
     ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
 
     if (ev.target.id == "squadroncreate" || ev.target.id == "squadroncontent") {
-        $("#" + ev.target.id).append(SwitchTemplate("pilotinlinetemplate",  ev.dataTransfer.getData("text")));
+        $("#" + ev.target.id).append(SwitchTemplate("pilotinlinetemplate", data));
+        $("#" + data).remove();
     }
     else {
         node = ev.target.parentNode;
         while (!node.id.toString().startsWith("pilot") && node.id != "squadroncontent")
             node = node.parentNode;
-        node.parentNode.insertBefore(document.getElementById(ev.dataTransfer.getData("text")), node.nextSibling);
+        node.parentNode.insertBefore(document.getElementById(data), node.nextSibling);
     }
 
 
     if (ev.target.id == "squadroncreate") {
         //creation
         cost += parseInt($("#" + data).find("#pilotcost").text());
-    }
-    else {
-        cost -= parseInt($("#" + data).find("#pilotcost").text());
+        //upgrades:
+
+
+
+        $.ajax({
+            url: config.get("ServerAdress") + "getmyxwingstock.php",
+            data: {
+                guid: config.get("connectionGuid"),
+                ship: $("#" + data).first().attr("databaseid")
+            },
+            dataType: "xml",
+            type: "POST",
+            success: function (xml) {
+
+
+                $(xml).find("stock").children().each(function () {
+                    // if ($("#" + data + " #upgrades #upgrade_" + $(this).attr("type")).length == 0) {
+                    //     var upgradeTemplate = $.parseHTML($.trim($("#upgradecontenair").html()));
+                    //     $(upgradeTemplate).first().attr("id", "upgrade_" + $(this).attr("type"));
+                    //     $(upgradeTemplate).find("#upgradebutton").text($(this).attr("type"));
+
+                    //     $("#" + data + " #upgrades").append(upgradeTemplate[0]);
+                    // }
+
+                    var item = this;
+
+                    $("#" + data + " #upgrades").children().each(function () {
+                        if ($(this).attr("type") == $(item).attr("type")) {
+                            var upgradeItemTemplate = $.parseHTML($.trim($("#upgradetemplate").html()));
+                            $(upgradeItemTemplate).first().attr("xws", $(item).attr("xws"));
+                            $(upgradeItemTemplate).first().attr("ship", $("#" + data).first().attr("databaseid"));
+                            $(upgradeItemTemplate).first().attr("upgradeid", $(this).attr("slot"));
+                            $(upgradeItemTemplate).first().attr("name", $(item).attr("name"));
+                            $(upgradeItemTemplate).find("#upgradename").html($(item).attr("name"));
+                            $(upgradeItemTemplate).find("#upgradedesc").html($(item).attr("desc"));
+                            $(upgradeItemTemplate).find("#upgradecost").html($(item).attr("cost"));
+                            $(this).find("#upgrademenu").append(upgradeItemTemplate[0])
+                        }
+                    });
+
+
+                    // $("#" + data + " #upgrades #upgrade_" + $(item).attr("type") + " #upgrademenu").append(upgradeItemTemplate[0])
+                });
+            },
+            error: function (status, error) {
+                alert(error);
+            }
+        });
+        $("#totalcost").text(cost + "pts");
+
 
     }
-    $("#totalcost").text(cost + "pts");
+    else {
+        //remove
+
+        $.ajax({
+            url: config.get("ServerAdress") + "getmyxwingstock.php",
+            data: {
+                guid: config.get("connectionGuid"),
+                shiptoremove: $("#" + data).attr("databaseid"),
+                clear: 1
+            },
+            type: "POST",
+            success: function (data) {
+                cost -= parseInt(data);
+                $("#totalcost").text(cost + "pts");
+            }
+        });
+    }
+
+
+}
+
+
+
+
+function SelectUpgrade(elem) {
+
+
+    $.ajax({
+        url: config.get("ServerAdress") + "getmyxwingstock.php",
+        data: {
+            guid: config.get("connectionGuid"),
+            xws: $(elem).attr("xws"),
+            shipid: $(elem).attr("ship"),
+            upgradeid: $(elem).attr("upgradeid"),
+        },
+        type: "POST",
+        success: function (data) {
+            var parent = $(elem).parent();
+            var target = $(parent).prev();
+            $(target).html($(elem).attr("name"))
+            cost += parseInt(data);
+            $("#totalcost").text(cost + "pts");
+        },
+        error: function (status, error) {
+            alert(error);
+        }
+    });
+
 }
