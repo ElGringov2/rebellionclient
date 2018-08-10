@@ -1,14 +1,20 @@
 const Config = require("electron-config");
 const config = new Config();
 
-const upgrades = new Array();
-const ships = new Array();
+const remote = require('electron').remote;
+
+
 
 
 $(function () {
+
+
     $.ajax({
         url: config.get("ServerAdress") + "getnewflight.php",
-        data: { guid: config.get("connectionGuid") },
+        data: {
+            guid: config.get("connectionGuid"),
+            squadron: config.get("SquadronName"),
+        },
         dataType: "xml",
         type: "POST",
         success: function (xml) {
@@ -92,27 +98,27 @@ function SwitchTemplate(TemplateID, divID) {
 
 
 
-function SelectShip(id, newXWS, ConnectionGUID) {
-    $.ajax({
-        url: "/createsquad",
-        type: "POST",
-        data: { guid: ConnectionGUID, setshipid: id, xws: newXWS },
-        success: function (xml) {
-            //les stats
-            var pilotStatsTemplate = "";
-            $.ajax({ url: "template_pilotstats.html", async: false, success: function (html) { pilotStatsTemplate = html; } });
-            var stats = pilotStatsTemplate;
-            stats = replaceAll(stats, "[SHIPLETTER]", $(xml).attr("shipletter"));
-            stats = replaceAll(stats, "[PILOTSKILL]", $(xml).attr("pilotskill"));
-            stats = replaceAll(stats, "[SHIPATTACK]", $(xml).attr("shipattack"));
-            stats = replaceAll(stats, "[SHIPAGILITY]", $(xml).attr("shipagility"));
-            stats = replaceAll(stats, "[SHIPHULL]", $(xml).attr("shiphull"));
-            stats = replaceAll(stats, "[SHIPSHIELD]", $(xml).attr("shipshield"));
-            $("#ShipName" + id).html($(xml).attr("shipname"));
-            $("#stats" + id).html(stats);
-        },
-    });
-}
+// function SelectShip(id, newXWS, ConnectionGUID) {
+//     $.ajax({
+//         url: "/createsquad",
+//         type: "POST",
+//         data: { guid: ConnectionGUID, setshipid: id, xws: newXWS },
+//         success: function (xml) {
+//             //les stats
+//             var pilotStatsTemplate = "";
+//             $.ajax({ url: "template_pilotstats.html", async: false, success: function (html) { pilotStatsTemplate = html; } });
+//             var stats = pilotStatsTemplate;
+//             stats = replaceAll(stats, "[SHIPLETTER]", $(xml).attr("shipletter"));
+//             stats = replaceAll(stats, "[PILOTSKILL]", $(xml).attr("pilotskill"));
+//             stats = replaceAll(stats, "[SHIPATTACK]", $(xml).attr("shipattack"));
+//             stats = replaceAll(stats, "[SHIPAGILITY]", $(xml).attr("shipagility"));
+//             stats = replaceAll(stats, "[SHIPHULL]", $(xml).attr("shiphull"));
+//             stats = replaceAll(stats, "[SHIPSHIELD]", $(xml).attr("shipshield"));
+//             $("#ShipName" + id).html($(xml).attr("shipname"));
+//             $("#stats" + id).html(stats);
+//         },
+//     });
+// }
 
 
 var cost = 0;
@@ -246,4 +252,52 @@ function SelectUpgrade(elem) {
         }
     });
 
+}
+
+
+
+function Cancel() {
+
+
+    $.ajax({
+        url: config.get("ServerAdress") + "getmyxwingstock.php",
+        data: {
+            guid: config.get("connectionGuid"),
+            cancel: 1,
+        },
+        type: "POST",
+        success: function (data) {
+            var window = remote.getCurrentWindow();
+            window.close();
+
+        },
+        error: function (status, error) {
+            alert(error);
+        }
+    });
+
+}
+
+$(window).on("beforeunload", function () {
+    Cancel();
+})
+
+function TakeOff() {
+    $.ajax({
+        url: config.get("ServerAdress") + "getmyxwingstock.php",
+        data: {
+            guid: config.get("connectionGuid"),
+            takeoff: 1,
+            squadron: config.get("SquadronName"),
+        },
+        type: "POST",
+        success: function (data) {
+            var window = remote.getCurrentWindow();
+            window.close();
+
+        },
+        error: function (status, error) {
+            alert(error);
+        }
+    });
 }

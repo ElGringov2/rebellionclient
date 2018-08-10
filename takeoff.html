@@ -40,9 +40,13 @@
                 <span id="totalcost"></span>
             </div>
         </div>
-        <div class="row ">
-            <div id="squadroncontent" class="scroll col-4" style="max-height: calc(100vh - 30px);top: 15px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-            <div id='squadroncreate' class="bg-dark col border border-secondary m-4 p-4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div class="row " style="display: inline-flex; height: 100%;">
+            <div id="squadroncontent" class="scroll col-4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div id='squadroncreate' class="scroll bg-dark col border border-secondary m-4 p-4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+        <div class="row" class="btn-group" role="group" aria-label="Validation" >
+            <button type="button" class="btn btn-primary" onclick="TakeOff()" >Faire décoller</button>
+            <button type="button" class="btn btn-primary" onclick="Cancel()" >Annuler</button>
         </div>
 
 

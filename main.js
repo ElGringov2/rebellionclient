@@ -304,6 +304,7 @@ function ShowBase() {
                 if (flightName != $(this).attr("squadron") + ", " + $(this).attr("flight")) {
                     flightName = $(this).attr("squadron") + ", " + $(this).attr("flight")
                     hangarDescription += "<h6>Escadron " + flightName + "</h6>";
+                    hangarDescription += "<button class=\"btn btn-primary\" onclick=\"OpenTakeOff('" + $(this).attr("flight") + "')\">Faire décoller des pilotes</button>";
                 }
                 var template = $("#pilotinlinetemplate").html();
                 template = template.replace("id=\"inlinepilot\"", "id='groundedpilot_" + iGrounded + "'");
@@ -573,7 +574,7 @@ function OpenCrate(ConnectionGUID, CrateID) {
 
 
 
-function OpenTakeOff()
+function OpenTakeOff(SquadronName)
 {
     let win = new remote.BrowserWindow({
         parent: remote.getCurrentWindow(),
@@ -584,6 +585,6 @@ function OpenTakeOff()
     win.setMenu(null)
     win.maximize();
     win.webContents.openDevTools();
-
+    config.set("SquadronName", SquadronName);
     win.loadFile("./takeoff.html");
 }
