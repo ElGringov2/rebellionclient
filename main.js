@@ -3,6 +3,14 @@ const config = new Config();
 const { app, BrowserWindow } = require('electron');
 const { remote } = require('electron')
 
+const ipc = require('electron').ipcRenderer;
+
+
+ipc.on('refresh_current', function (event, store) {
+    alert(store);
+});
+
+
 function Maximize() {
     remote.BrowserWindow.getFocusedWindow().maximize();
 }
@@ -126,6 +134,9 @@ function LoadGalaxy() {
 
 
 
+                            $("#planetmodalinfos #btnOpenActionMenu").click(function () {
+                                OpenPlanetActionMenu(xml);
+                            })
                             $("#planetmodalinfos #planetName").text($(xml).attr("name"));
                             $("#planetmodalinfos #planetDesc").text($(xml).attr("description"));
                             $("#planetmodalinfos #planetFullImage").attr("src", $(xml).attr("image"));
@@ -574,8 +585,7 @@ function OpenCrate(ConnectionGUID, CrateID) {
 
 
 
-function OpenTakeOff(SquadronName)
-{
+function OpenTakeOff(SquadronName) {
     let win = new remote.BrowserWindow({
         parent: remote.getCurrentWindow(),
         modal: true,
@@ -587,4 +597,57 @@ function OpenTakeOff(SquadronName)
     win.webContents.openDevTools();
     config.set("SquadronName", SquadronName);
     win.loadFile("./takeoff.html");
+
+
+    win.on("closed", function () {
+        ShowBase();
+    });
+}
+
+
+function OpenPlanetActionMenu(xml) {
+
+
+    var id = $(xml).attr("planetid");
+
+    const { Menu, MenuItem } = remote;
+    const menu = new Menu()
+    var assetType = "";
+    $(xml).find("actions").children().each(function () {
+        if (assetType != $(this).attr("assettype")) {
+            assetType = $(this).attr("assettype");
+            menu.append(new MenuItem({ type: 'separator' }));
+        }
+        var menuItem = new MenuItem();
+        menuItem.label = $(this).attr("asset");
+        if ($(this).attr("type") == "move")
+            menuItem.click = function () {
+                $.ajax({
+                    type: "POST",
+                    url: config.get("ServerAdress") + "getmoveasset.php",
+                    data: { 
+                        guid: config.get("connectionGuid"),
+                        assettype: $(this).attr("assettype"),
+                        asset: $(this).attr("asset"),
+                        dbid: $(this).attr("dbid"),
+                        planetid: id
+                     },
+                    dataType: "text",
+                    success: function() {
+
+                    }
+
+
+                });
+
+            };
+        menu.append(menuItem);
+    });
+    menu.append(new MenuItem({ label: 'MenuItem1', click() { console.log('item 1 clicked') } }))
+    menu.append(new MenuItem({ type: 'separator' }))
+    menu.append(new MenuItem({ label: 'MenuItem2', type: 'checkbox', checked: true }))
+
+
+    menu.popup({ window: remote.getCurrentWindow() })
+
 }

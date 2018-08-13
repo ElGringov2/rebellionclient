@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="col text-light scroll">
                                         <p>Pilotes au sol:</p>
-                                        
+
                                         <p id='hangar_right_col'></p>
                                     </div>
                                 </div>
@@ -238,6 +238,9 @@
             <li class="nav-item">
                 <a class="nav-link" id="buildings-tab" data-toggle="tab" href="#buildings" role="tab" aria-controls="buildings" aria-selected="false">Bâtiments</a>
             </li>
+            <span class="float-right">
+                <img src='./17699.svg' id='btnOpenActionMenu' style="height: 24px;" />
+            </span>
         </ul>
         <div class="tab-content m-3" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -282,8 +285,12 @@
             <div class="card-body">
                 <h6 class="card-title ">[NAME]</h6>
                 <div class="card-text ">
-                    <small>[DESCRIPTION]
-                    </small>
+                    <small>[DESCRIPTION]</small>
+                    <label id='lockswitch' class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                        <span >Verouiller</span>
+                    </label>
                     <footer>
                         <div class='missionreward float-left'>[REWARD]</div>
                         <img src="" width="32px" class=" float-right" />
@@ -297,9 +304,9 @@
         $(function () {
             Maximize();
             UpdateUserInfos();
-            //LoadGalaxy();
+            LoadGalaxy();
             SetMissionMenu();
-            OpenTakeOff("bantha");
+            //OpenTakeOff("bantha");
         });
     </script>
 

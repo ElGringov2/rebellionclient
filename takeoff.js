@@ -279,6 +279,7 @@ function Cancel() {
 }
 
 $(window).on("beforeunload", function () {
+
     Cancel();
 })
 
@@ -294,6 +295,7 @@ function TakeOff() {
         success: function (data) {
             var window = remote.getCurrentWindow();
             window.close();
+
 
         },
         error: function (status, error) {
