@@ -3,12 +3,12 @@ const config = new Config();
 const { app, BrowserWindow } = require('electron');
 const { remote } = require('electron')
 
-const ipc = require('electron').ipcRenderer;
+// const ipc = require('electron').ipcRenderer;
 
 
-ipc.on('refresh_current', function (event, store) {
-    alert(store);
-});
+// ipc.on('refresh_current', function (event, store) {
+//     alert(store);
+// });
 
 
 function Maximize() {
@@ -134,9 +134,9 @@ function LoadGalaxy() {
 
 
 
-                            $("#planetmodalinfos #btnOpenActionMenu").click(function () {
-                                OpenPlanetActionMenu(xml);
-                            })
+                            // $("#planetmodalinfos #btnOpenActionMenu").click(function () {
+                            //     OpenPlanetActionMenu(xml);
+                            // })
                             $("#planetmodalinfos #planetName").text($(xml).attr("name"));
                             $("#planetmodalinfos #planetDesc").text($(xml).attr("description"));
                             $("#planetmodalinfos #planetFullImage").attr("src", $(xml).attr("image"));
@@ -266,6 +266,35 @@ function LoadGalaxy() {
                                 $("#planetmodalinfos #assets-list").append(template);
                             });
 
+                            var ActionHeader = "";
+                            var actionString = "";
+                            var assetType = "";
+                            var actionID = 0;
+                            $(xml).find("actions").children().each(function () {
+                                if (ActionHeader != $(this).attr("type")) {
+                                    ActionHeader = $(this).attr("type");
+                                    if (ActionHeader == "move")
+                                        actionString += "<h6>Déplacement</h6>";
+                                }
+                                if (assetType != $(this).attr("assettype")) {
+                                    assetType = $(this).attr("assettype");
+                                    if (assetType == "flight") actionString += "<h5>Escadrilles</h5>";
+                                    if (assetType == "pilot") actionString += "<h5>Pilotes</h5>";
+                                    if (assetType == "assault") actionString += "<h5>Commandos</h5>";
+                                }
+
+                                var actionTemplate = $.parseHTML($("#actiontemplate").clone().html());
+                                $(actionTemplate).find("#actionImage").attr("src", $(this).attr("icon"));
+                                $(actionTemplate).find("#actionName").text($(this).attr("name"));
+                                $(actionTemplate).first().attr("id", "action_" + actionID);
+                                $(actionTemplate).attr("onclick", "MoveAssetToPlanet(" + $(xml).attr("planetid") + ", '" + $(this).attr("assettype") + "', '" + $(this).attr("asset") + "', " + $(this).attr("dbid") + ")");
+
+                                actionString += $("<div />").append($(actionTemplate)).html();
+
+                                actionID++;
+
+                            });
+                            $("#planetmodalinfos #actions-list").html(actionString);
 
                             $('#planetmodal').modal('show');
                         }
@@ -615,39 +644,52 @@ function OpenPlanetActionMenu(xml) {
     var assetType = "";
     $(xml).find("actions").children().each(function () {
         if (assetType != $(this).attr("assettype")) {
+            if (assetType != "")
+                menu.append(new MenuItem({ type: 'separator' }));
             assetType = $(this).attr("assettype");
-            menu.append(new MenuItem({ type: 'separator' }));
         }
-        var menuItem = new MenuItem();
-        menuItem.label = $(this).attr("asset");
+
         if ($(this).attr("type") == "move")
-            menuItem.click = function () {
-                $.ajax({
-                    type: "POST",
-                    url: config.get("ServerAdress") + "getmoveasset.php",
-                    data: { 
-                        guid: config.get("connectionGuid"),
-                        assettype: $(this).attr("assettype"),
-                        asset: $(this).attr("asset"),
-                        dbid: $(this).attr("dbid"),
-                        planetid: id
-                     },
-                    dataType: "text",
-                    success: function() {
-
-                    }
+            menu.append(new MenuItem({
+                click() {
 
 
-                });
+                },
+                label: $(this).attr("asset")
+            }));
 
-            };
-        menu.append(menuItem);
     });
-    menu.append(new MenuItem({ label: 'MenuItem1', click() { console.log('item 1 clicked') } }))
-    menu.append(new MenuItem({ type: 'separator' }))
-    menu.append(new MenuItem({ label: 'MenuItem2', type: 'checkbox', checked: true }))
 
 
     menu.popup({ window: remote.getCurrentWindow() })
+
+}
+
+
+/**
+ * Déplace l'asset sur la planete ID
+ * @param {number} id L'ID de la planete
+ * @param {string} AssetType Le type d'asset
+ * @param {string} asset le nom de l'asset
+ * @param {number} dbid l'ID de l'asset
+ */
+function MoveAssetToPlanet(id, AssetType, asset, dbid) {
+    $.ajax({
+        type: "POST",
+        url: config.get("ServerAdress") + "getmoveasset.php",
+        data: {
+            guid: config.get("connectionGuid"),
+            assettype: AssetType,
+            asset: asset,
+            dbid: dbid,
+            planetid: id
+        },
+        dataType: "text",
+        success: function () {
+
+        }
+
+
+    })
 
 }

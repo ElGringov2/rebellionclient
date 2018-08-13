@@ -238,9 +238,10 @@
             <li class="nav-item">
                 <a class="nav-link" id="buildings-tab" data-toggle="tab" href="#buildings" role="tab" aria-controls="buildings" aria-selected="false">Bâtiments</a>
             </li>
-            <span class="float-right">
-                <img src='./17699.svg' id='btnOpenActionMenu' style="height: 24px;" />
-            </span>
+            <li class="nav-item">
+                <a class="nav-link" id="actions-tab" data-toggle="tab" href="#actions" role="tab" aria-controls="actions" aria-selected="false">Actions</a>
+            </li>
+
         </ul>
         <div class="tab-content m-3" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -262,6 +263,10 @@
             </div>
             <div class="tab-pane fade" id="buildings" role="tabpanel" aria-labelledby="buildings-tab">
                 <div class="container" id='buildings-list'>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="actions" role="actionpanel" aria-labelledby="actions-tab">
+                <div class="container" id='actions-list'>
                 </div>
             </div>
         </div>
@@ -289,12 +294,28 @@
                     <label id='lockswitch' class="switch">
                         <input type="checkbox">
                         <span class="slider round"></span>
-                        <span >Verouiller</span>
+                        <span>Verouiller</span>
                     </label>
                     <footer>
                         <div class='missionreward float-left'>[REWARD]</div>
                         <img src="" width="32px" class=" float-right" />
                     </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id='actiontemplate' style="display: none">
+        <div class="border border-danger m-2 hover-blue" id='action' onclick="">
+            <div class="container">
+                <div class="row">
+                    <div id='actionIcon' class="col-1">
+                        <img id='actionImage' style="width: 32px;" />
+                    </div>
+                    <div class="col" id='actionName'>
+
+                    </div>
                 </div>
             </div>
         </div>

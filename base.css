@@ -210,3 +210,7 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+  .hover-blue:hover {
+      background-color: blue;
+  }
