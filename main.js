@@ -275,6 +275,8 @@ function LoadGalaxy() {
                             $(xml).find("actions").children().each(function () {
                                 if (ActionHeader != $(this).attr("type")) {
                                     ActionHeader = $(this).attr("type");
+                                    if (ActionHeader == "discover")
+                                        actionString += "<h6>Campagne</h6>";
                                     if (ActionHeader == "move")
                                         actionString += "<h6>Déplacement</h6>";
                                 }
@@ -289,8 +291,10 @@ function LoadGalaxy() {
                                 $(actionTemplate).find("#actionImage").attr("src", $(this).attr("icon"));
                                 $(actionTemplate).find("#actionName").text($(this).attr("name"));
                                 $(actionTemplate).first().attr("id", "action_" + actionID);
-                                $(actionTemplate).attr("onclick", "MoveAssetToPlanet(" + $(xml).attr("planetid") + ", '" + $(this).attr("assettype") + "', '" + $(this).attr("asset") + "', " + $(this).attr("dbid") + ")");
-
+                                if ($(this).attr("type") == "move")
+                                    $(actionTemplate).attr("onclick", "MoveAssetToPlanet(" + $(xml).attr("planetid") + ", '" + $(this).attr("assettype") + "', '" + $(this).attr("asset") + "', " + $(this).attr("dbid") + ")");
+                                if ($(this).attr("type") == "discover")
+                                    $(actionTemplate).attr("onclick", "DiscoverMission(" + $(xml).attr("planetid") + ", '" + $(this).attr("assettype") + "')");
                                 actionString += $("<div />").append($(actionTemplate)).html();
 
                                 actionID++;
@@ -696,6 +700,30 @@ function MoveAssetToPlanet(id, AssetType, asset, dbid) {
 
 }
 
+/**
+ * Lance une recherche de mission sur la planete ID
+ * @param {number} id L'ID de la planete
+ * @param {string} AssetType Le type d'asset
+ */
+function DiscoverMission(id, AssetType) {
+    $.ajax({
+        type: "POST",
+        url: config.get("ServerAdress") + "getmissions.php",
+        data: {
+            guid: config.get("connectionGuid"),
+            assettype: AssetType,
+            planetid: id,
+            discover: 1,
+        },
+        dataType: "text",
+        success: function () {
+
+        }
+
+
+    })
+
+}
 
 function createLine(x1, y1, x2, y2, offset) {
 
@@ -724,7 +752,7 @@ function createLine(x1, y1, x2, y2, offset) {
             'top': y1,
         })
         .width(length);
-        // .offset({ left: x1, top: y1 });
+    // .offset({ left: x1, top: y1 });
 
     // offset += 16;
     //$("#desktop #lines").append($("<line x1='"0"' y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
