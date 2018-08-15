@@ -83,7 +83,7 @@ function LoadGalaxy() {
 
 
 
-            $("#desktop").html("<div style='background: url(\"./starfield.jpg\") no-repeat center center fixed;-webkit-background-size: contain;-moz-background-size: contain;-o-background-size: contain;background-size: cover;height: 100%;width:  100%;'>");
+            $("#desktop").html("<div style='background: url(\"./starfield.jpg\") no-repeat center center fixed;-webkit-background-size: contain;-moz-background-size: contain;-o-background-size: contain;background-size: cover;height: 100%;width:  100%;'><div id='lines' style='height: 100%;width:  100%;' />");
             $(GalaxyXML).find("planets").children().each(function () {
                 var res = template;
                 var localStyle = style;
@@ -110,7 +110,9 @@ function LoadGalaxy() {
                 res = res.replace("style=\"display: none;\"", "style=\"" + localStyle + "\"");
                 res = res.replace("IconName", $(this).attr("name"));
                 res = res.replace("src=\"\" ", "src=\"" + $(this).attr("icon") + "\"");
-
+                if ($(this).attr("action") == "move") {
+                    createLine($(this).attr("x"), $(this).attr("y"), $(this).attr("movetox"), $(this).attr("movetoy"), offset)
+                }
                 $("#desktop").append(res);
 
             });
@@ -692,4 +694,39 @@ function MoveAssetToPlanet(id, AssetType, asset, dbid) {
 
     })
 
+}
+
+
+function createLine(x1, y1, x2, y2, offset) {
+
+    //var size = window.size;
+    x1 = x1 / 100 * $("#lines").width() + offset + 36;
+    x2 = x2 / 100 * $("#lines").width() + 24;
+
+    y1 = y1 / 100 * $("#lines").height() + 16;
+    y2 = y2 / 100 * $("#lines").height();
+
+
+    var length = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    var angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+    var transform = 'rotate(' + angle + 'deg)';
+
+
+
+    var line = $('<div>')
+        .appendTo('#desktop #lines')
+        .addClass('line')
+        .css({
+            'position': 'absolute',
+            'transform': transform,
+            'background-color': 'gray',
+            'left': x1,
+            'top': y1,
+        })
+        .width(length);
+        // .offset({ left: x1, top: y1 });
+
+    // offset += 16;
+    //$("#desktop #lines").append($("<line x1='"0"' y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+    // $("#desktop #lines").append($("<div class='line' style='position: absolute; transform: rotate(" + angle + "deg); left: calc(" + x1 + "% + " + offset + "px); top: calc(" + y1 + "% + 16px); width: " + length + "%; background-color: red;' />"))
 }
