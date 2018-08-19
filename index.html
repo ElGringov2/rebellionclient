@@ -286,16 +286,11 @@
 
 
     <div id='missiontemplate' style="display: none;">
-        <div id='mission_id' class="card ml-1 mr-1 [CLASS] missionclass" style="width: 12rem;">
+        <div id='mission_id' class="card ml-1 mr-1 [CLASS] missionclass" style="width: 12rem;" onclick='OpenMission([ID]);'>
             <div class="card-body">
                 <h6 class="card-title ">[NAME]</h6>
                 <div class="card-text ">
                     <small>[DESCRIPTION]</small>
-                    <label id='lockswitch' class="switch">
-                        <input type="checkbox">
-                        <span class="slider round"></span>
-                        <span>Verouiller</span>
-                    </label>
                     <footer>
                         <div class='missionreward float-left'>[REWARD]</div>
                         <img src="" width="32px" class=" float-right" />
@@ -327,7 +322,6 @@
             UpdateUserInfos();
             LoadGalaxy();
             SetMissionMenu();
-            //OpenTakeOff("bantha");
         });
     </script>
 

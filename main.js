@@ -158,6 +158,7 @@ function LoadGalaxy() {
                                 }
                                 var template = $("#missiontemplate").html();
                                 template = template.replace("mission_id", "mission_" + $(this).attr("databaseid"));
+                                template = template.replace("[ID]", $(this).attr("databaseid"));
                                 template = template.replace("src=\"\"", "src=\"./" + $(this).attr("gamelogo") + "\"");
                                 template = template.replace("[DESCRIPTION]", $(this).attr("Description"));
                                 template = template.replace("[NAME]", $(this).attr("Name"));
@@ -723,6 +724,25 @@ function DiscoverMission(id, AssetType) {
 
     })
 
+}
+
+
+
+function OpenMission(id) {
+    $.ajax({
+        type: "POST",
+        url: config.get("ServerAdress") + "getmissions.php",
+        data: {
+            guid: config.get("connectionGuid"),
+            missionid: id
+        },
+        dataType: "text",
+        success: function () {
+            
+        }
+
+
+    })
 }
 
 function createLine(x1, y1, x2, y2, offset) {

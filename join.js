@@ -52,8 +52,8 @@ function Create() {
                 window.location.replace("login.html");
             }
         },
-        error: function (e) {
-            alert(e);
+        error: function (a, b, c) {
+            alert(b);
         }
         
     })
